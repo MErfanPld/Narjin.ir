@@ -57,3 +57,22 @@ class FeatureAdmin(admin.ModelAdmin):
 #     list_display = ('plan', 'feature', 'value')
 #     list_filter = ('plan',)
 #     search_fields = ('feature__title', 'plan__title')
+
+from .models import Article
+
+@admin.register(Article)
+class ArticleAdmin(admin.ModelAdmin):
+    list_display = ('title', 'is_published', 'created_at')
+    prepopulated_fields = {"slug": ("title",)}
+    list_filter = ('is_published',)
+    search_fields = ('title', 'content')
+
+from django.contrib import admin
+from .models import ContactMessage
+
+@admin.register(ContactMessage)
+class ContactMessageAdmin(admin.ModelAdmin):
+    list_display = ('full_name', 'subject', 'is_read', 'created_at')
+    list_filter = ('is_read', 'created_at')
+    search_fields = ('full_name', 'subject')
+    readonly_fields = ('created_at',)

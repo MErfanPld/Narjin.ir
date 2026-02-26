@@ -41,3 +41,36 @@ class PlanFeature(models.Model):
         unique_together = ('plan', 'feature')
 
 
+from django.utils.text import slugify
+
+class Article(models.Model):
+    title = models.CharField(max_length=255)
+    slug = models.SlugField(unique=True, blank=True)
+    meta_title = models.CharField(max_length=255, blank=True, null=True)
+    meta_description = models.TextField(blank=True, null=True)
+    content = models.TextField()
+    image = models.ImageField(upload_to='articles/', blank=True, null=True)
+    is_published = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title
+
+
+
+
+class ContactMessage(models.Model):
+    full_name = models.CharField(max_length=150)
+    phone = models.CharField(max_length=20, blank=True, null=True)
+    subject = models.CharField(max_length=255)
+    message = models.TextField()
+    is_read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.full_name} - {self.subject}"

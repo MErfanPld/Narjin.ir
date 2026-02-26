@@ -3,8 +3,8 @@ from django.shortcuts import render
 # Create your views here.
 
 from rest_framework.generics import ListAPIView
-from .models import Plan
-from .serializers import PlanSerializer
+from .models import ContactMessage, Plan
+from .serializers import ContactMessageSerializer, PlanSerializer
 
 class PlanListAPIView(ListAPIView):
     queryset = Plan.objects.filter(is_active=True)
@@ -43,3 +43,22 @@ class SubscriptionDetailAPIView(RetrieveAPIView):
     def get_object(self):
         # فرض: کاربر فقط یک کسب‌وکار دارد
         return self.request.user.business.subscription
+    
+
+from rest_framework import generics
+from .models import Article
+from .serializers import ArticleSerializer
+
+class ArticleListAPIView(generics.ListAPIView):
+    queryset = Article.objects.filter(is_published=True)
+    serializer_class = ArticleSerializer
+
+
+class ArticleDetailAPIView(generics.RetrieveAPIView):
+    queryset = Article.objects.filter(is_published=True)
+    serializer_class = ArticleSerializer
+    lookup_field = 'slug'
+    
+class ContactMessageCreateAPIView(generics.CreateAPIView):
+    queryset = ContactMessage.objects.all()
+    serializer_class = ContactMessageSerializer

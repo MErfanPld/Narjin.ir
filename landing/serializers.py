@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from landing.models import Feature, Plan, PlanFeature
+from landing.models import Article, Feature, Plan, PlanFeature
 
 
 class FeatureSerializer(serializers.ModelSerializer):
@@ -61,3 +61,18 @@ class SubscriptionSerializer(serializers.ModelSerializer):
             'trial_start', 'trial_end',
             'active'
         ]
+        
+        
+class ArticleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Article
+        fields = '__all__'
+        
+        
+from .models import ContactMessage
+
+class ContactMessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ContactMessage
+        fields = '__all__'
+        read_only_fields = ('is_read', 'created_at')
