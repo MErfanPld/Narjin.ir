@@ -1,0 +1,4685 @@
+openapi: 3.0.3
+info:
+  title: Project API
+  version: 1.0.0
+  description: Project description
+paths:
+  /accounts/change-password/:
+    post:
+      operationId: accounts_change_password_create
+      tags:
+      - accounts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePassword'
+            examples:
+              مثالتغییرپسورد:
+                value:
+                  old_password: oldpassword123
+                  new_password: newpassword456
+                  confirm_password: newpassword456
+                summary: مثال تغییر پسورد
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ChangePassword'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ChangePassword'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+                description: Unspecified response body
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+                description: Unspecified response body
+          description: ''
+  /accounts/login/:
+    post:
+      operationId: accounts_login_create
+      tags:
+      - accounts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Login'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Login'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Login'
+          description: ''
+  /accounts/logout/:
+    post:
+      operationId: accounts_logout_create
+      tags:
+      - accounts
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /accounts/register/:
+    post:
+      operationId: accounts_register_create
+      tags:
+      - accounts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Register'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Register'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Register'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Register'
+          description: ''
+  /accounts/reset-password/:
+    post:
+      operationId: accounts_reset_password_create
+      tags:
+      - accounts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPassword'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ResetPassword'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ResetPassword'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResetPassword'
+          description: ''
+  /accounts/send-reset-code/:
+    post:
+      operationId: accounts_send_reset_code_create
+      tags:
+      - accounts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendResetCode'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SendResetCode'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SendResetCode'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SendResetCode'
+          description: ''
+  /accounts/verify-reset-code/:
+    post:
+      operationId: accounts_verify_reset_code_create
+      tags:
+      - accounts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyResetCode'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VerifyResetCode'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VerifyResetCode'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyResetCode'
+          description: ''
+  /acl/permissions/:
+    get:
+      operationId: acl_permissions_list
+      tags:
+      - acl
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Permission'
+          description: ''
+    post:
+      operationId: acl_permissions_create
+      tags:
+      - acl
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Permission'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Permission'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Permission'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Permission'
+          description: ''
+  /acl/permissions/{id}/:
+    get:
+      operationId: acl_permissions_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this دسترسی.
+        required: true
+      tags:
+      - acl
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Permission'
+          description: ''
+    put:
+      operationId: acl_permissions_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this دسترسی.
+        required: true
+      tags:
+      - acl
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Permission'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Permission'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Permission'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Permission'
+          description: ''
+    patch:
+      operationId: acl_permissions_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this دسترسی.
+        required: true
+      tags:
+      - acl
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedPermission'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedPermission'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedPermission'
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Permission'
+          description: ''
+    delete:
+      operationId: acl_permissions_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this دسترسی.
+        required: true
+      tags:
+      - acl
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /acl/user-permissions/:
+    get:
+      operationId: acl_user_permissions_list
+      tags:
+      - acl
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserWithPermissions'
+          description: ''
+  /acl/user-permissions/{id}/:
+    get:
+      operationId: acl_user_permissions_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - acl
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPermission'
+          description: ''
+    put:
+      operationId: acl_user_permissions_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - acl
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPermission'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserPermission'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserPermission'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPermission'
+          description: ''
+    patch:
+      operationId: acl_user_permissions_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - acl
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUserPermission'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUserPermission'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUserPermission'
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPermission'
+          description: ''
+    delete:
+      operationId: acl_user_permissions_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - acl
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /acl/user-permissions/create/:
+    post:
+      operationId: acl_user_permissions_create_create
+      tags:
+      - acl
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPermission'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserPermission'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserPermission'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPermission'
+          description: ''
+  /business/:
+    get:
+      operationId: business_list
+      description: A base class from which all permission classes should inherit.
+      tags:
+      - business
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Business'
+          description: ''
+  /business/{id}/:
+    get:
+      operationId: business_retrieve
+      description: A base class from which all permission classes should inherit.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - business
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Business'
+          description: ''
+    put:
+      operationId: business_update
+      description: A base class from which all permission classes should inherit.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - business
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Business'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Business'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Business'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Business'
+          description: ''
+    patch:
+      operationId: business_partial_update
+      description: A base class from which all permission classes should inherit.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - business
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedBusiness'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedBusiness'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedBusiness'
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Business'
+          description: ''
+    delete:
+      operationId: business_destroy
+      description: A base class from which all permission classes should inherit.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - business
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /business/available-times/:
+    get:
+      operationId: business_available_times_retrieve
+      parameters:
+      - in: query
+        name: date
+        schema:
+          type: string
+        description: تاریخ رزرو (YYYY-MM-DD)
+        required: true
+      - in: query
+        name: service_id
+        schema:
+          type: integer
+        description: ID سرویس انتخاب‌شده
+        required: true
+      tags:
+      - business
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+                description: Unspecified response body
+          description: ''
+  /business/create/:
+    post:
+      operationId: business_create_create
+      description: A base class from which all permission classes should inherit.
+      tags:
+      - business
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Business'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Business'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Business'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Business'
+          description: ''
+  /business/customer/business/{random_code}/:
+    get:
+      operationId: business_customer_business_retrieve
+      parameters:
+      - in: path
+        name: random_code
+        schema:
+          type: string
+        required: true
+      tags:
+      - business
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /business/employees/:
+    get:
+      operationId: business_employees_list
+      description: A base class from which all permission classes should inherit.
+      tags:
+      - business
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Employee'
+          description: ''
+  /business/employees/{id}/:
+    get:
+      operationId: business_employees_retrieve
+      description: A base class from which all permission classes should inherit.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - business
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+          description: ''
+    delete:
+      operationId: business_employees_destroy
+      description: A base class from which all permission classes should inherit.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - business
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /business/employees/create/:
+    post:
+      operationId: business_employees_create_create
+      description: A base class from which all permission classes should inherit.
+      tags:
+      - business
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmployeeCreateUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EmployeeCreateUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EmployeeCreateUpdate'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeCreateUpdate'
+          description: ''
+  /business/employees/update/{id}/:
+    put:
+      operationId: business_employees_update_update
+      description: A base class from which all permission classes should inherit.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - business
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmployeeCreateUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EmployeeCreateUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EmployeeCreateUpdate'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeCreateUpdate'
+          description: ''
+    patch:
+      operationId: business_employees_update_partial_update
+      description: A base class from which all permission classes should inherit.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - business
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedEmployeeCreateUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedEmployeeCreateUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedEmployeeCreateUpdate'
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeCreateUpdate'
+          description: ''
+  /business/me/:
+    get:
+      operationId: business_me_retrieve
+      description: A base class from which all permission classes should inherit.
+      tags:
+      - business
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Business'
+          description: ''
+  /business/resolve/{random_code}/:
+    post:
+      operationId: business_resolve_create
+      description: |-
+        API برای گرفتن اطلاعات آرایشگاه از طریق کد
+        مشتری باید لاگین باشد
+      parameters:
+      - in: path
+        name: random_code
+        schema:
+          type: string
+        required: true
+      tags:
+      - business
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /business/services/:
+    get:
+      operationId: business_services_list
+      description: A base class from which all permission classes should inherit.
+      tags:
+      - business
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Service'
+          description: ''
+  /business/services/{id}/:
+    get:
+      operationId: business_services_retrieve
+      description: A base class from which all permission classes should inherit.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - business
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+          description: ''
+    put:
+      operationId: business_services_update
+      description: A base class from which all permission classes should inherit.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - business
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Service'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Service'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Service'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+          description: ''
+    patch:
+      operationId: business_services_partial_update
+      description: A base class from which all permission classes should inherit.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - business
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedService'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedService'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedService'
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+          description: ''
+    delete:
+      operationId: business_services_destroy
+      description: A base class from which all permission classes should inherit.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - business
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /business/services/create/:
+    post:
+      operationId: business_services_create_create
+      description: A base class from which all permission classes should inherit.
+      tags:
+      - business
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Service'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Service'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Service'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+          description: ''
+  /business/slots/:
+    get:
+      operationId: business_slots_list
+      description: A base class from which all permission classes should inherit.
+      tags:
+      - business
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AvailableTimeSlot'
+          description: ''
+  /business/slots/{id}/:
+    get:
+      operationId: business_slots_retrieve
+      description: A base class from which all permission classes should inherit.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - business
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AvailableTimeSlot'
+          description: ''
+    put:
+      operationId: business_slots_update
+      description: A base class from which all permission classes should inherit.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - business
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AvailableTimeSlot'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AvailableTimeSlot'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AvailableTimeSlot'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AvailableTimeSlot'
+          description: ''
+    patch:
+      operationId: business_slots_partial_update
+      description: A base class from which all permission classes should inherit.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - business
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAvailableTimeSlot'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAvailableTimeSlot'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAvailableTimeSlot'
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AvailableTimeSlot'
+          description: ''
+    delete:
+      operationId: business_slots_destroy
+      description: A base class from which all permission classes should inherit.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - business
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /business/slots/{id}/status/:
+    put:
+      operationId: business_slots_status_update
+      description: A base class from which all permission classes should inherit.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - business
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TimeSlotStatusUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TimeSlotStatusUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TimeSlotStatusUpdate'
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimeSlotStatusUpdate'
+          description: ''
+    patch:
+      operationId: business_slots_status_partial_update
+      description: A base class from which all permission classes should inherit.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - business
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTimeSlotStatusUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedTimeSlotStatusUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedTimeSlotStatusUpdate'
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimeSlotStatusUpdate'
+          description: ''
+  /business/slots/create/:
+    post:
+      operationId: business_slots_create_create
+      description: A base class from which all permission classes should inherit.
+      tags:
+      - business
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AvailableTimeSlot'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AvailableTimeSlot'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AvailableTimeSlot'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AvailableTimeSlot'
+          description: ''
+  /comments/:
+    get:
+      operationId: comments_list
+      tags:
+      - comments
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comment'
+          description: ''
+    post:
+      operationId: comments_create
+      tags:
+      - comments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comment'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Comment'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Comment'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+          description: ''
+  /comments/{id}/delete/:
+    delete:
+      operationId: comments_delete_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - comments
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /dashboard/:
+    get:
+      operationId: dashboard_retrieve
+      tags:
+      - dashboard
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /dashboard/users/:
+    get:
+      operationId: dashboard_users_list
+      description: لیست کاربران را نمایش می‌دهد
+      tags:
+      - dashboard
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+          description: ''
+    post:
+      operationId: dashboard_users_create
+      description: یک کاربر جدید ایجاد می‌کند
+      tags:
+      - dashboard
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCreate'
+          description: ''
+  /dashboard/users/{id}/:
+    get:
+      operationId: dashboard_users_retrieve
+      description: جزئیات یک کاربر خاص را نمایش می‌دهد
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - dashboard
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /dashboard/users/{id}/delete/:
+    delete:
+      operationId: dashboard_users_delete_destroy
+      description: یک کاربر را حذف می‌کند
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - dashboard
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /dashboard/users/{id}/update/:
+    put:
+      operationId: dashboard_users_update_update
+      description: اطلاعات کاربر را به‌روزرسانی می‌کند
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - dashboard
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserUpdate'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserUpdate'
+          description: ''
+  /dashboard/users/create/:
+    post:
+      operationId: dashboard_users_create_create
+      description: یک کاربر جدید ایجاد می‌کند
+      tags:
+      - dashboard
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCreate'
+          description: ''
+  /dashboard/users/profile/:
+    get:
+      operationId: dashboard_users_profile_retrieve
+      description: A base class from which all permission classes should inherit.
+      tags:
+      - dashboard
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+          description: ''
+  /dashboard/users/profile/update/:
+    put:
+      operationId: dashboard_users_profile_update_update
+      description: A base class from which all permission classes should inherit.
+      tags:
+      - dashboard
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserProfile'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserProfile'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserProfile'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+          description: ''
+    patch:
+      operationId: dashboard_users_profile_update_partial_update
+      description: A base class from which all permission classes should inherit.
+      tags:
+      - dashboard
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUserProfile'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUserProfile'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUserProfile'
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+          description: ''
+  /landing/admin/features/:
+    get:
+      operationId: landing_admin_features_list
+      tags:
+      - landing
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Feature'
+          description: ''
+    post:
+      operationId: landing_admin_features_create
+      tags:
+      - landing
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Feature'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Feature'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Feature'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Feature'
+          description: ''
+  /landing/admin/features/{id}/:
+    get:
+      operationId: landing_admin_features_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this feature.
+        required: true
+      tags:
+      - landing
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Feature'
+          description: ''
+    put:
+      operationId: landing_admin_features_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this feature.
+        required: true
+      tags:
+      - landing
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Feature'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Feature'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Feature'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Feature'
+          description: ''
+    patch:
+      operationId: landing_admin_features_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this feature.
+        required: true
+      tags:
+      - landing
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedFeature'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedFeature'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedFeature'
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Feature'
+          description: ''
+    delete:
+      operationId: landing_admin_features_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this feature.
+        required: true
+      tags:
+      - landing
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /landing/admin/plan-features/:
+    get:
+      operationId: landing_admin_plan_features_list
+      tags:
+      - landing
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PlanFeature'
+          description: ''
+    post:
+      operationId: landing_admin_plan_features_create
+      tags:
+      - landing
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlanFeature'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PlanFeature'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PlanFeature'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlanFeature'
+          description: ''
+  /landing/admin/plan-features/{id}/:
+    get:
+      operationId: landing_admin_plan_features_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this plan feature.
+        required: true
+      tags:
+      - landing
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlanFeature'
+          description: ''
+    put:
+      operationId: landing_admin_plan_features_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this plan feature.
+        required: true
+      tags:
+      - landing
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlanFeature'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PlanFeature'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PlanFeature'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlanFeature'
+          description: ''
+    patch:
+      operationId: landing_admin_plan_features_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this plan feature.
+        required: true
+      tags:
+      - landing
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedPlanFeature'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedPlanFeature'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedPlanFeature'
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlanFeature'
+          description: ''
+    delete:
+      operationId: landing_admin_plan_features_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this plan feature.
+        required: true
+      tags:
+      - landing
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /landing/article/:
+    get:
+      operationId: landing_article_list
+      tags:
+      - landing
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Article'
+          description: ''
+  /landing/article/{slug}/:
+    get:
+      operationId: landing_article_retrieve
+      parameters:
+      - in: path
+        name: slug
+        schema:
+          type: string
+        required: true
+      tags:
+      - landing
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Article'
+          description: ''
+  /landing/contact/:
+    post:
+      operationId: landing_contact_create
+      tags:
+      - landing
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactMessage'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ContactMessage'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ContactMessage'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactMessage'
+          description: ''
+  /landing/plans/:
+    get:
+      operationId: landing_plans_list
+      tags:
+      - landing
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Plan'
+          description: ''
+  /landing/subscription/:
+    get:
+      operationId: landing_subscription_retrieve
+      tags:
+      - landing
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subscription'
+          description: ''
+  /packages/:
+    get:
+      operationId: packages_list
+      description: A base class from which all permission classes should inherit.
+      tags:
+      - packages
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Package'
+          description: ''
+  /packages/{id}/:
+    get:
+      operationId: packages_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - packages
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Package'
+          description: ''
+  /packages/{id}/delete/:
+    delete:
+      operationId: packages_delete_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - packages
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /packages/{id}/update/:
+    put:
+      operationId: packages_update_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - packages
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Package'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Package'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Package'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Package'
+          description: ''
+    patch:
+      operationId: packages_update_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - packages
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedPackage'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedPackage'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedPackage'
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Package'
+          description: ''
+  /packages/create/:
+    post:
+      operationId: packages_create_create
+      tags:
+      - packages
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Package'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Package'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Package'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Package'
+          description: ''
+  /packages/user/:
+    get:
+      operationId: packages_user_list
+      tags:
+      - packages
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Package'
+          description: ''
+  /payments/cards/number/:
+    get:
+      operationId: payments_cards_number_list
+      tags:
+      - payments
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NumbersCard'
+          description: ''
+    post:
+      operationId: payments_cards_number_create
+      tags:
+      - payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NumbersCard'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NumbersCard'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NumbersCard'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NumbersCard'
+          description: ''
+  /payments/cards/number/{id}/:
+    get:
+      operationId: payments_cards_number_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - payments
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NumbersCard'
+          description: ''
+    put:
+      operationId: payments_cards_number_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NumbersCard'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NumbersCard'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NumbersCard'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NumbersCard'
+          description: ''
+    patch:
+      operationId: payments_cards_number_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedNumbersCard'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedNumbersCard'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedNumbersCard'
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NumbersCard'
+          description: ''
+    delete:
+      operationId: payments_cards_number_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - payments
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /payments/cards/number/user/:
+    get:
+      operationId: payments_cards_number_user_list
+      tags:
+      - payments
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NumbersCard'
+          description: ''
+  /payments/manual-payments/:
+    get:
+      operationId: payments_manual_payments_list
+      tags:
+      - payments
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ManualPayment'
+          description: ''
+    post:
+      operationId: payments_manual_payments_create
+      tags:
+      - payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ManualPayment'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ManualPayment'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ManualPayment'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ManualPayment'
+          description: ''
+  /payments/manual-payments/{id}/:
+    get:
+      operationId: payments_manual_payments_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - payments
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ManualPayment'
+          description: ''
+    put:
+      operationId: payments_manual_payments_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ManualPayment'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ManualPayment'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ManualPayment'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ManualPayment'
+          description: ''
+    patch:
+      operationId: payments_manual_payments_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedManualPayment'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedManualPayment'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedManualPayment'
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ManualPayment'
+          description: ''
+    delete:
+      operationId: payments_manual_payments_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - payments
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /payments/manual-payments/{id}/status/:
+    patch:
+      operationId: payments_manual_payments_status_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - payments
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /payments/wallet/:
+    get:
+      operationId: payments_wallet_retrieve
+      tags:
+      - payments
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: payments_wallet_create
+      tags:
+      - payments
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /payments/wallet/{appointment_id}/pay_wallet/:
+    post:
+      operationId: payments_wallet_pay_wallet_create
+      parameters:
+      - in: path
+        name: appointment_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - payments
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /payments/wallet/transactions/:
+    get:
+      operationId: payments_wallet_transactions_retrieve
+      tags:
+      - payments
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /reports/appointments/:
+    get:
+      operationId: reports_appointments_retrieve
+      tags:
+      - reports
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /reports/financial/:
+    get:
+      operationId: reports_financial_retrieve
+      tags:
+      - reports
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /reports/top-services/:
+    get:
+      operationId: reports_top_services_retrieve
+      tags:
+      - reports
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /reservations/business/appointments/:
+    get:
+      operationId: reservations_business_appointments_list
+      description: لیست نوبت‌های ارایشگاه برای صاحب کسب‌وکار
+      tags:
+      - reservations
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AppointmentBusiness'
+          description: ''
+  /reservations/business/appointments/{id}/:
+    get:
+      operationId: reservations_business_appointments_retrieve
+      description: جزئیات یک نوبت برای صاحب ارایشگاه
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - reservations
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppointmentBusiness'
+          description: ''
+  /reservations/business/appointments/{id}/update/:
+    put:
+      operationId: reservations_business_appointments_update_update
+      description: تایید/رد نوبت توسط صاحب ارایشگاه
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - reservations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppointmentBusiness'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AppointmentBusiness'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AppointmentBusiness'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppointmentBusiness'
+          description: ''
+    patch:
+      operationId: reservations_business_appointments_update_partial_update
+      description: تایید/رد نوبت توسط صاحب ارایشگاه
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - reservations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAppointmentBusiness'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAppointmentBusiness'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAppointmentBusiness'
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppointmentBusiness'
+          description: ''
+  /reservations/my-appointments/:
+    get:
+      operationId: reservations_my_appointments_list
+      description: نوبت‌های خود مشتری
+      tags:
+      - reservations
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Appointment'
+          description: ''
+    post:
+      operationId: reservations_my_appointments_create
+      description: نوبت‌های خود مشتری
+      tags:
+      - reservations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Appointment'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Appointment'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Appointment'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Appointment'
+          description: ''
+  /reservations/my-appointments/{id}/:
+    get:
+      operationId: reservations_my_appointments_retrieve
+      description: جزئیات و حذف نوبت مشتری
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - reservations
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Appointment'
+          description: ''
+    put:
+      operationId: reservations_my_appointments_update
+      description: جزئیات و حذف نوبت مشتری
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - reservations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Appointment'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Appointment'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Appointment'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Appointment'
+          description: ''
+    patch:
+      operationId: reservations_my_appointments_partial_update
+      description: جزئیات و حذف نوبت مشتری
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - reservations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAppointment'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAppointment'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAppointment'
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Appointment'
+          description: ''
+    delete:
+      operationId: reservations_my_appointments_destroy
+      description: جزئیات و حذف نوبت مشتری
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - reservations
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /reservations/my-appointments/{id}/cancel/:
+    post:
+      operationId: reservations_my_appointments_cancel_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - reservations
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /sliders/:
+    get:
+      operationId: sliders_list
+      description: A base class from which all permission classes should inherit.
+      tags:
+      - sliders
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Slider'
+          description: ''
+    post:
+      operationId: sliders_create
+      description: A base class from which all permission classes should inherit.
+      tags:
+      - sliders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Slider'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Slider'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Slider'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Slider'
+          description: ''
+  /sliders/{id}/:
+    get:
+      operationId: sliders_retrieve
+      description: A base class from which all permission classes should inherit.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - sliders
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Slider'
+          description: ''
+    put:
+      operationId: sliders_update
+      description: A base class from which all permission classes should inherit.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - sliders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Slider'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Slider'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Slider'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Slider'
+          description: ''
+    patch:
+      operationId: sliders_partial_update
+      description: A base class from which all permission classes should inherit.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - sliders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedSlider'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedSlider'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedSlider'
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Slider'
+          description: ''
+    delete:
+      operationId: sliders_destroy
+      description: A base class from which all permission classes should inherit.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - sliders
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /sliders/user/:
+    get:
+      operationId: sliders_user_list
+      tags:
+      - sliders
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Slider'
+          description: ''
+  /working_hours/:
+    get:
+      operationId: working_hours_list
+      description: A base class from which all permission classes should inherit.
+      tags:
+      - working_hours
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WorkingHours'
+          description: ''
+  /working_hours/{id}/:
+    get:
+      operationId: working_hours_retrieve
+      description: A base class from which all permission classes should inherit.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - working_hours
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkingHours'
+          description: ''
+    put:
+      operationId: working_hours_update
+      description: A base class from which all permission classes should inherit.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - working_hours
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkingHours'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/WorkingHours'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/WorkingHours'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkingHours'
+          description: ''
+    patch:
+      operationId: working_hours_partial_update
+      description: A base class from which all permission classes should inherit.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - working_hours
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedWorkingHours'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedWorkingHours'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedWorkingHours'
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkingHours'
+          description: ''
+    delete:
+      operationId: working_hours_destroy
+      description: A base class from which all permission classes should inherit.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - working_hours
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /working_hours/create/:
+    post:
+      operationId: working_hours_create_create
+      description: A base class from which all permission classes should inherit.
+      tags:
+      - working_hours
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkingHours'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/WorkingHours'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/WorkingHours'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkingHours'
+          description: ''
+  /working_hours/user/:
+    get:
+      operationId: working_hours_user_list
+      tags:
+      - working_hours
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WorkingHours'
+          description: ''
+components:
+  schemas:
+    Appointment:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/StatusB86Enum'
+          title: وضعیت
+        user:
+          type: integer
+          readOnly: true
+        service:
+          allOf:
+          - $ref: '#/components/schemas/Service'
+          readOnly: true
+        employee:
+          allOf:
+          - $ref: '#/components/schemas/Employee'
+          readOnly: true
+        get_status:
+          type: string
+          readOnly: true
+        employee_name:
+          type: string
+          readOnly: true
+        service_id:
+          type: integer
+          writeOnly: true
+        employee_id:
+          type: integer
+          writeOnly: true
+        time_slot_id:
+          type: integer
+          writeOnly: true
+      required:
+      - employee
+      - employee_name
+      - get_status
+      - id
+      - service
+      - service_id
+      - time_slot_id
+      - user
+    AppointmentBusiness:
+      type: object
+      description: سریالایزر برای نمایش نوبت‌ها به صاحب ارایشگاه
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/StatusB86Enum'
+          title: وضعیت
+        customer_name:
+          type: string
+          readOnly: true
+        customer_phone:
+          type: string
+          readOnly: true
+        service_name:
+          type: string
+        employee_name:
+          type: string
+          readOnly: true
+        date:
+          type: string
+          format: date
+        start_time:
+          type: string
+          format: time
+        end_time:
+          type: string
+          readOnly: true
+        reminder_sent:
+          type: boolean
+          title: یادآوری ارسال شده
+      required:
+      - customer_name
+      - customer_phone
+      - date
+      - employee_name
+      - end_time
+      - id
+      - service_name
+      - start_time
+    Article:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 255
+        slug:
+          type: string
+          maxLength: 50
+          pattern: ^[-a-zA-Z0-9_]+$
+        meta_title:
+          type: string
+          nullable: true
+          maxLength: 255
+        meta_description:
+          type: string
+          nullable: true
+        content:
+          type: string
+        image:
+          type: string
+          format: uri
+          nullable: true
+        is_published:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - content
+      - created_at
+      - id
+      - title
+    AvailableTimeSlot:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        service_id:
+          type: integer
+          writeOnly: true
+        service:
+          type: integer
+          readOnly: true
+          title: سرویس
+        date:
+          type: string
+          format: date
+          title: تاریخ
+        start_time:
+          type: string
+          format: time
+        end_time:
+          type: string
+          readOnly: true
+        is_available:
+          type: boolean
+          title: قابل رزرو
+      required:
+      - date
+      - end_time
+      - id
+      - service
+      - service_id
+      - start_time
+    Business:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: نام کسب‌وکار
+          maxLength: 255
+        slug:
+          type: string
+          title: اسلاگ
+          maxLength: 255
+          pattern: ^[-a-zA-Z0-9_]+$
+        random_code:
+          type: string
+          readOnly: true
+          title: کد تصادفی
+        business_type:
+          allOf:
+          - $ref: '#/components/schemas/BusinessTypeEnum'
+          title: نوع کسب‌وکار
+        address:
+          type: string
+          title: آدرس
+          maxLength: 255
+        phone_number:
+          type: string
+          title: شماره تماس
+          maxLength: 15
+        is_active:
+          type: boolean
+          readOnly: true
+          title: فعال
+      required:
+      - address
+      - business_type
+      - id
+      - is_active
+      - name
+      - phone_number
+      - random_code
+      - slug
+    BusinessTypeEnum:
+      enum:
+      - salon
+      type: string
+      description: '* `salon` - آرایشگاه'
+    ChangePassword:
+      type: object
+      properties:
+        old_password:
+          type: string
+          description: پسورد فعلی
+        new_password:
+          type: string
+          description: پسورد جدید
+        confirm_password:
+          type: string
+          description: تایید پسورد جدید
+      required:
+      - confirm_password
+      - new_password
+      - old_password
+    Comment:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        target_name:
+          type: string
+          readOnly: true
+        target_type:
+          $ref: '#/components/schemas/TargetTypeEnum'
+        content:
+          type: string
+          title: متن نظر
+        rating:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          title: امتیاز (۱ تا ۵)
+        is_approved:
+          type: boolean
+          readOnly: true
+          title: تأیید شده
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        user:
+          type: integer
+          readOnly: true
+        service:
+          type: integer
+          nullable: true
+        business:
+          type: integer
+          nullable: true
+      required:
+      - content
+      - created_at
+      - id
+      - is_approved
+      - target_name
+      - target_type
+      - updated_at
+      - user
+    ContactMessage:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        full_name:
+          type: string
+          maxLength: 150
+        phone:
+          type: string
+          nullable: true
+          maxLength: 20
+        subject:
+          type: string
+          maxLength: 255
+        message:
+          type: string
+        is_read:
+          type: boolean
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - full_name
+      - id
+      - is_read
+      - message
+      - subject
+    Employee:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user:
+          type: string
+          readOnly: true
+        business:
+          type: string
+          readOnly: true
+        skill:
+          type: string
+          title: مهارت
+          maxLength: 255
+      required:
+      - business
+      - id
+      - skill
+      - user
+    EmployeeCreateUpdate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user_id:
+          type: integer
+          writeOnly: true
+        user:
+          type: string
+          readOnly: true
+        business:
+          type: string
+          readOnly: true
+        skill:
+          type: string
+          title: مهارت
+          maxLength: 255
+      required:
+      - business
+      - id
+      - skill
+      - user
+      - user_id
+    Feature:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          title: عنوان
+          maxLength: 100
+        key:
+          type: string
+          title: کلید
+          maxLength: 50
+          pattern: ^[-a-zA-Z0-9_]+$
+        description:
+          type: string
+          title: توضیحات
+      required:
+      - id
+      - key
+      - title
+    Login:
+      type: object
+      properties:
+        phone_number:
+          type: string
+        password:
+          type: string
+          writeOnly: true
+      required:
+      - password
+      - phone_number
+    ManualPayment:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        tracking_code:
+          type: string
+          maxLength: 50
+        receipt_image:
+          type: string
+          format: uri
+          nullable: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/ManualPaymentStatusEnum'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        user:
+          type: integer
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - status
+      - tracking_code
+      - user
+    ManualPaymentStatusEnum:
+      enum:
+      - pending
+      - approved
+      - rejected
+      type: string
+      description: |-
+        * `pending` - در انتظار بررسی
+        * `approved` - تأیید شده
+        * `rejected` - رد شده
+    NumbersCard:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        num_code:
+          type: string
+          maxLength: 16
+        name_bank:
+          type: string
+          maxLength: 50
+        status:
+          type: boolean
+      required:
+      - id
+      - name_bank
+      - num_code
+    Package:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        business:
+          allOf:
+          - $ref: '#/components/schemas/Business'
+          readOnly: true
+        business_id:
+          type: integer
+          writeOnly: true
+        name:
+          type: string
+          title: نام پکیج
+          maxLength: 255
+        desc:
+          type: string
+          nullable: true
+          title: توضیحات
+        total_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          title: قیمت کل
+        image:
+          type: string
+          format: uri
+          nullable: true
+          title: تصویر
+        services:
+          type: array
+          items:
+            $ref: '#/components/schemas/Service'
+          readOnly: true
+        service_ids:
+          type: array
+          items:
+            type: integer
+            writeOnly: true
+          writeOnly: true
+      required:
+      - business
+      - business_id
+      - id
+      - name
+      - service_ids
+      - services
+    PatchedAppointment:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/StatusB86Enum'
+          title: وضعیت
+        user:
+          type: integer
+          readOnly: true
+        service:
+          allOf:
+          - $ref: '#/components/schemas/Service'
+          readOnly: true
+        employee:
+          allOf:
+          - $ref: '#/components/schemas/Employee'
+          readOnly: true
+        get_status:
+          type: string
+          readOnly: true
+        employee_name:
+          type: string
+          readOnly: true
+        service_id:
+          type: integer
+          writeOnly: true
+        employee_id:
+          type: integer
+          writeOnly: true
+        time_slot_id:
+          type: integer
+          writeOnly: true
+    PatchedAppointmentBusiness:
+      type: object
+      description: سریالایزر برای نمایش نوبت‌ها به صاحب ارایشگاه
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/StatusB86Enum'
+          title: وضعیت
+        customer_name:
+          type: string
+          readOnly: true
+        customer_phone:
+          type: string
+          readOnly: true
+        service_name:
+          type: string
+        employee_name:
+          type: string
+          readOnly: true
+        date:
+          type: string
+          format: date
+        start_time:
+          type: string
+          format: time
+        end_time:
+          type: string
+          readOnly: true
+        reminder_sent:
+          type: boolean
+          title: یادآوری ارسال شده
+    PatchedAvailableTimeSlot:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        service_id:
+          type: integer
+          writeOnly: true
+        service:
+          type: integer
+          readOnly: true
+          title: سرویس
+        date:
+          type: string
+          format: date
+          title: تاریخ
+        start_time:
+          type: string
+          format: time
+        end_time:
+          type: string
+          readOnly: true
+        is_available:
+          type: boolean
+          title: قابل رزرو
+    PatchedBusiness:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: نام کسب‌وکار
+          maxLength: 255
+        slug:
+          type: string
+          title: اسلاگ
+          maxLength: 255
+          pattern: ^[-a-zA-Z0-9_]+$
+        random_code:
+          type: string
+          readOnly: true
+          title: کد تصادفی
+        business_type:
+          allOf:
+          - $ref: '#/components/schemas/BusinessTypeEnum'
+          title: نوع کسب‌وکار
+        address:
+          type: string
+          title: آدرس
+          maxLength: 255
+        phone_number:
+          type: string
+          title: شماره تماس
+          maxLength: 15
+        is_active:
+          type: boolean
+          readOnly: true
+          title: فعال
+    PatchedEmployeeCreateUpdate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user_id:
+          type: integer
+          writeOnly: true
+        user:
+          type: string
+          readOnly: true
+        business:
+          type: string
+          readOnly: true
+        skill:
+          type: string
+          title: مهارت
+          maxLength: 255
+    PatchedFeature:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          title: عنوان
+          maxLength: 100
+        key:
+          type: string
+          title: کلید
+          maxLength: 50
+          pattern: ^[-a-zA-Z0-9_]+$
+        description:
+          type: string
+          title: توضیحات
+    PatchedManualPayment:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        tracking_code:
+          type: string
+          maxLength: 50
+        receipt_image:
+          type: string
+          format: uri
+          nullable: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/ManualPaymentStatusEnum'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        user:
+          type: integer
+          readOnly: true
+    PatchedNumbersCard:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        num_code:
+          type: string
+          maxLength: 16
+        name_bank:
+          type: string
+          maxLength: 50
+        status:
+          type: boolean
+    PatchedPackage:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        business:
+          allOf:
+          - $ref: '#/components/schemas/Business'
+          readOnly: true
+        business_id:
+          type: integer
+          writeOnly: true
+        name:
+          type: string
+          title: نام پکیج
+          maxLength: 255
+        desc:
+          type: string
+          nullable: true
+          title: توضیحات
+        total_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          title: قیمت کل
+        image:
+          type: string
+          format: uri
+          nullable: true
+          title: تصویر
+        services:
+          type: array
+          items:
+            $ref: '#/components/schemas/Service'
+          readOnly: true
+        service_ids:
+          type: array
+          items:
+            type: integer
+            writeOnly: true
+          writeOnly: true
+    PatchedPermission:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: نام نمایشی
+          maxLength: 50
+        code:
+          type: string
+          title: عنوان انگلیسی
+          maxLength: 255
+        description:
+          type: string
+          nullable: true
+          title: توضیحات
+          maxLength: 500
+    PatchedPlanFeature:
+      type: object
+      properties:
+        feature:
+          $ref: '#/components/schemas/Feature'
+        value:
+          type: string
+          description: 'مثلا: دارد / ندارد / 5 / نامحدود'
+          maxLength: 100
+    PatchedService:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: نام سرویس
+          maxLength: 255
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          title: قیمت
+        description:
+          type: string
+          title: توضیحات
+        duration:
+          type: string
+          title: مدت زمان
+        employee_id:
+          type: integer
+          writeOnly: true
+          nullable: true
+        business:
+          allOf:
+          - $ref: '#/components/schemas/Business'
+          readOnly: true
+        employee:
+          allOf:
+          - $ref: '#/components/schemas/Employee'
+          readOnly: true
+        is_active:
+          type: boolean
+          title: فعال
+    PatchedSlider:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          title: عنوان
+          maxLength: 255
+        sub_title:
+          type: string
+          title: متن
+          maxLength: 255
+        image:
+          type: string
+          format: uri
+          nullable: true
+          title: تصویر
+        is_active:
+          type: boolean
+          title: فعال؟
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          title: تاریخ ایجاد
+    PatchedTimeSlotStatusUpdate:
+      type: object
+      properties:
+        is_available:
+          type: boolean
+          title: قابل رزرو
+    PatchedUserPermission:
+      type: object
+      properties:
+        user:
+          type: integer
+          title: کاربر
+        id:
+          type: integer
+          readOnly: true
+        permissions:
+          type: array
+          items:
+            type: integer
+        permissions_display:
+          type: string
+          readOnly: true
+    PatchedUserProfile:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        first_name:
+          type: string
+          title: نام
+          maxLength: 100
+        last_name:
+          type: string
+          title: نام خانوادگی
+          maxLength: 100
+        phone_number:
+          type: string
+          title: شماره تلفن
+          maxLength: 11
+        image:
+          type: string
+          format: uri
+          nullable: true
+          title: تصویر
+        is_owner:
+          type: boolean
+          title: مالک هست؟
+        is_superuser:
+          type: boolean
+          title: ادمین هست؟
+        is_staff:
+          type: boolean
+          title: کارمند
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          title: تاریخ ثبت
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          title: تاریخ ویرایش
+    PatchedWorkingHours:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        day:
+          type: string
+          format: date
+          title: روز
+        opening_time:
+          type: string
+          format: time
+          title: ساعت شروع
+        closing_time:
+          type: string
+          format: time
+          title: ساعت پایان
+    Permission:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: نام نمایشی
+          maxLength: 50
+        code:
+          type: string
+          title: عنوان انگلیسی
+          maxLength: 255
+        description:
+          type: string
+          nullable: true
+          title: توضیحات
+          maxLength: 500
+      required:
+      - code
+      - id
+      - name
+    Plan:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          title: عنوان
+          maxLength: 100
+        price:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          title: قیمت
+        duration_days:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          title: زمان
+        features:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlanFeature'
+          readOnly: true
+      required:
+      - duration_days
+      - features
+      - id
+      - price
+      - title
+    PlanFeature:
+      type: object
+      properties:
+        feature:
+          $ref: '#/components/schemas/Feature'
+        value:
+          type: string
+          description: 'مثلا: دارد / ندارد / 5 / نامحدود'
+          maxLength: 100
+      required:
+      - feature
+      - value
+    Register:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        first_name:
+          type: string
+          title: نام
+          maxLength: 100
+        last_name:
+          type: string
+          title: نام خانوادگی
+          maxLength: 100
+        phone_number:
+          type: string
+          title: شماره تلفن
+          maxLength: 11
+        password:
+          type: string
+          writeOnly: true
+      required:
+      - first_name
+      - id
+      - last_name
+      - password
+      - phone_number
+    ResetPassword:
+      type: object
+      properties:
+        phone_number:
+          type: string
+          maxLength: 11
+        password:
+          type: string
+          writeOnly: true
+          minLength: 6
+      required:
+      - password
+      - phone_number
+    SendResetCode:
+      type: object
+      properties:
+        phone_number:
+          type: string
+          maxLength: 11
+      required:
+      - phone_number
+    Service:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: نام سرویس
+          maxLength: 255
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          title: قیمت
+        description:
+          type: string
+          title: توضیحات
+        duration:
+          type: string
+          title: مدت زمان
+        employee_id:
+          type: integer
+          writeOnly: true
+          nullable: true
+        business:
+          allOf:
+          - $ref: '#/components/schemas/Business'
+          readOnly: true
+        employee:
+          allOf:
+          - $ref: '#/components/schemas/Employee'
+          readOnly: true
+        is_active:
+          type: boolean
+          title: فعال
+      required:
+      - business
+      - description
+      - duration
+      - employee
+      - id
+      - name
+      - price
+    Slider:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          title: عنوان
+          maxLength: 255
+        sub_title:
+          type: string
+          title: متن
+          maxLength: 255
+        image:
+          type: string
+          format: uri
+          nullable: true
+          title: تصویر
+        is_active:
+          type: boolean
+          title: فعال؟
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          title: تاریخ ایجاد
+      required:
+      - created_at
+      - id
+      - sub_title
+      - title
+    StatusB86Enum:
+      enum:
+      - pending
+      - confirmed
+      - canceled
+      type: string
+      description: |-
+        * `pending` - در انتظار
+        * `confirmed` - تایید شده
+        * `canceled` - لغو شده
+    Subscription:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        business:
+          allOf:
+          - $ref: '#/components/schemas/Business'
+          readOnly: true
+        plan:
+          allOf:
+          - $ref: '#/components/schemas/Plan'
+          readOnly: true
+        business_id:
+          type: integer
+          writeOnly: true
+        plan_id:
+          type: integer
+          writeOnly: true
+          nullable: true
+        trial_start:
+          type: string
+          format: date-time
+          title: شروع تست
+        trial_end:
+          type: string
+          format: date-time
+          title: پایان تست
+        active:
+          type: boolean
+          title: فعال
+      required:
+      - business
+      - business_id
+      - id
+      - plan
+    TargetTypeEnum:
+      enum:
+      - service
+      - business
+      type: string
+      description: |-
+        * `service` - سرویس
+        * `business` - کسب‌وکار
+    TimeSlotStatusUpdate:
+      type: object
+      properties:
+        is_available:
+          type: boolean
+          title: قابل رزرو
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        password:
+          type: string
+          title: گذرواژه
+          maxLength: 128
+        first_name:
+          type: string
+          title: نام
+          maxLength: 100
+        last_name:
+          type: string
+          title: نام خانوادگی
+          maxLength: 100
+        phone_number:
+          type: string
+          title: شماره تلفن
+          maxLength: 11
+        is_owner:
+          type: boolean
+          title: مالک هست؟
+        is_active:
+          type: boolean
+          title: فعال
+        is_staff:
+          type: boolean
+          title: کارمند
+        image:
+          type: string
+          format: uri
+          nullable: true
+          title: تصویر
+      required:
+      - first_name
+      - id
+      - last_name
+      - password
+      - phone_number
+    UserCreate:
+      type: object
+      properties:
+        first_name:
+          type: string
+          title: نام
+          maxLength: 100
+        last_name:
+          type: string
+          title: نام خانوادگی
+          maxLength: 100
+        phone_number:
+          type: string
+          title: شماره تلفن
+          maxLength: 11
+        password:
+          type: string
+          title: گذرواژه
+          maxLength: 128
+        image:
+          type: string
+          format: uri
+          nullable: true
+          title: تصویر
+      required:
+      - first_name
+      - last_name
+      - password
+      - phone_number
+    UserPermission:
+      type: object
+      properties:
+        user:
+          type: integer
+          title: کاربر
+        id:
+          type: integer
+          readOnly: true
+        permissions:
+          type: array
+          items:
+            type: integer
+        permissions_display:
+          type: string
+          readOnly: true
+      required:
+      - id
+      - permissions
+      - permissions_display
+      - user
+    UserProfile:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        first_name:
+          type: string
+          title: نام
+          maxLength: 100
+        last_name:
+          type: string
+          title: نام خانوادگی
+          maxLength: 100
+        phone_number:
+          type: string
+          title: شماره تلفن
+          maxLength: 11
+        image:
+          type: string
+          format: uri
+          nullable: true
+          title: تصویر
+        is_owner:
+          type: boolean
+          title: مالک هست؟
+        is_superuser:
+          type: boolean
+          title: ادمین هست؟
+        is_staff:
+          type: boolean
+          title: کارمند
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          title: تاریخ ثبت
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          title: تاریخ ویرایش
+      required:
+      - created_at
+      - first_name
+      - id
+      - last_name
+      - phone_number
+      - updated_at
+    UserUpdate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        last_login:
+          type: string
+          format: date-time
+          nullable: true
+          title: آخرین ورود
+        first_name:
+          type: string
+          title: نام
+          maxLength: 100
+        last_name:
+          type: string
+          title: نام خانوادگی
+          maxLength: 100
+        phone_number:
+          type: string
+          title: شماره تلفن
+          maxLength: 11
+        birthday_day:
+          type: integer
+          maximum: 31
+          minimum: 1
+          nullable: true
+          title: روز تولد
+        birthday_month:
+          type: integer
+          maximum: 12
+          minimum: 1
+          nullable: true
+          title: ماه تولد
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          title: تاریخ ثبت
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          title: تاریخ ویرایش
+        is_owner:
+          type: boolean
+          title: مالک هست؟
+        is_superuser:
+          type: boolean
+          title: ادمین هست؟
+        is_active:
+          type: boolean
+          title: فعال
+        is_staff:
+          type: boolean
+          title: کارمند
+        image:
+          type: string
+          format: uri
+          nullable: true
+          title: تصویر
+        groups:
+          type: array
+          items:
+            type: integer
+            title: گروه‌ها
+          title: گروه‌ها
+          description: گروه‌هایی که این کاربر به آنها تعلق دارد. کاربر تمام اجازه‌های
+            مرتبط با این گروه‌ها را دریافت خواهد کرد.
+        user_permissions:
+          type: array
+          items:
+            type: integer
+            title: اجازه‌های کاربر
+          title: اجازه‌های کاربر
+          description: اجازه‌های خاص این کاربر.
+      required:
+      - created_at
+      - first_name
+      - id
+      - last_name
+      - phone_number
+      - updated_at
+    UserWithPermissions:
+      type: object
+      properties:
+        id_user_permission:
+          type: integer
+          readOnly: true
+        users:
+          type: string
+          readOnly: true
+        permissions:
+          type: string
+          readOnly: true
+      required:
+      - id_user_permission
+      - permissions
+      - users
+    VerifyResetCode:
+      type: object
+      properties:
+        phone_number:
+          type: string
+          maxLength: 11
+        code:
+          type: string
+          maxLength: 6
+      required:
+      - code
+      - phone_number
+    WorkingHours:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        day:
+          type: string
+          format: date
+          title: روز
+        opening_time:
+          type: string
+          format: time
+          title: ساعت شروع
+        closing_time:
+          type: string
+          format: time
+          title: ساعت پایان
+      required:
+      - closing_time
+      - day
+      - id
+      - opening_time
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
