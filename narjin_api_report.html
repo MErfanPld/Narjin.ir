@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>گزارش تست API نارژین</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<style>
+  body { font-family: 'Vazirmatn', Tahoma, sans-serif; background:#f5f3ee; margin:0; padding:24px; color:#1f2d24; }
+  h1 { color:#0f3d2e; }
+  .summary { display:flex; gap:16px; flex-wrap:wrap; margin-bottom:24px; }
+  .card { background:#fff; border-radius:12px; padding:16px 24px; box-shadow:0 1px 4px rgba(0,0,0,.08); min-width:150px; }
+  .card .num { font-size:28px; font-weight:700; color:#0f3d2e; }
+  .card .label { color:#666; font-size:13px; margin-top:4px; }
+  .chart-wrap { background:#fff; border-radius:12px; padding:20px; margin-bottom:24px; box-shadow:0 1px 4px rgba(0,0,0,.08); }
+  table { width:100%; border-collapse:collapse; background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,.08); }
+  th, td { padding:10px 14px; text-align:right; border-bottom:1px solid #eee; font-size:14px; vertical-align:top; }
+  th { background:#0f3d2e; color:#fff; position:sticky; top:0; }
+  .row-fail { background:#fff5f5; }
+  .badge { padding:3px 10px; border-radius:20px; font-size:12px; font-weight:600; color:#fff; }
+  .badge.ok { background:#2e7d32; }
+  .badge.fail { background:#c62828; }
+  .error-detail { font-family:monospace; font-size:11px; color:#b71c1c; white-space:pre-wrap; max-width:420px; }
+  code { background:#f0efe9; padding:2px 6px; border-radius:4px; }
+</style>
+</head>
+<body>
+<h1>گزارش تست کامل API — http://127.0.0.1:8000</h1>
+
+<div class="summary">
+  <div class="card"><div class="num">35</div><div class="label">کل درخواست‌ها</div></div>
+  <div class="card"><div class="num" style="color:#2e7d32">19</div><div class="label">موفق</div></div>
+  <div class="card"><div class="num" style="color:#c62828">16</div><div class="label">ناموفق</div></div>
+  <div class="card"><div class="num">54.3%</div><div class="label">نرخ موفقیت</div></div>
+  <div class="card"><div class="num">244.0 ms</div><div class="label">میانگین زمان پاسخ</div></div>
+</div>
+
+<div class="chart-wrap">
+  <canvas id="chart" height="90"></canvas>
+</div>
+
+<table>
+  <thead>
+    <tr><th>API</th><th>Method</th><th>Path</th><th>وضعیت</th><th>زمان پاسخ</th><th>جزئیات خطا</th></tr>
+  </thead>
+  <tbody>
+    
+        <tr class="row-ok">
+            <td>ثبت‌نام کاربر</td>
+            <td><code>POST</code></td>
+            <td><code>/accounts/register/</code></td>
+            <td><span class="badge ok">201</span></td>
+            <td>3438.4 ms</td>
+            <td></td>
+        </tr>
+        <tr class="row-ok">
+            <td>ورود (لاگین)</td>
+            <td><code>POST</code></td>
+            <td><code>/accounts/login/</code></td>
+            <td><span class="badge ok">200</span></td>
+            <td>2595.5 ms</td>
+            <td></td>
+        </tr>
+        <tr class="row-ok">
+            <td>پروفایل کاربر</td>
+            <td><code>GET</code></td>
+            <td><code>/dashboard/users/profile/</code></td>
+            <td><span class="badge ok">200</span></td>
+            <td>20.6 ms</td>
+            <td></td>
+        </tr>
+        <tr class="row-fail">
+            <td>کسب‌وکار من (بررسی وجود)</td>
+            <td><code>GET</code></td>
+            <td><code>/business/me/</code></td>
+            <td><span class="badge fail">404</span></td>
+            <td>194.8 ms</td>
+            <td><div class="error-detail">{&quot;detail&quot;:&quot;شما هنوز کسب‌وکاری ثبت نکرده‌اید.&quot;}</div></td>
+        </tr>
+        <tr class="row-ok">
+            <td>ساخت کسب‌وکار</td>
+            <td><code>POST</code></td>
+            <td><code>/business/create/</code></td>
+            <td><span class="badge ok">201</span></td>
+            <td>221.4 ms</td>
+            <td></td>
+        </tr>
+        <tr class="row-fail">
+            <td>ساخت کارمند</td>
+            <td><code>POST</code></td>
+            <td><code>/business/employees/create/</code></td>
+            <td><span class="badge fail">403</span></td>
+            <td>118.3 ms</td>
+            <td><div class="error-detail">{&quot;detail&quot;:&quot;شما اجازه انجام این دستور را ندارید.&quot;}</div></td>
+        </tr>
+        <tr class="row-fail">
+            <td>ساخت سرویس</td>
+            <td><code>POST</code></td>
+            <td><code>/business/services/create/</code></td>
+            <td><span class="badge fail">403</span></td>
+            <td>12.6 ms</td>
+            <td><div class="error-detail">{&quot;detail&quot;:&quot;شما اجازه انجام این دستور را ندارید.&quot;}</div></td>
+        </tr>
+        <tr class="row-fail">
+            <td>ثبت ساعت کاری</td>
+            <td><code>POST</code></td>
+            <td><code>/working_hours/create/</code></td>
+            <td><span class="badge fail">403</span></td>
+            <td>23.3 ms</td>
+            <td><div class="error-detail">{&quot;detail&quot;:&quot;شما اجازه انجام این دستور را ندارید.&quot;}</div></td>
+        </tr>
+        <tr class="row-fail">
+            <td>ساخت پکیج</td>
+            <td><code>POST</code></td>
+            <td><code>/packages/create/</code></td>
+            <td><span class="badge fail">403</span></td>
+            <td>21.7 ms</td>
+            <td><div class="error-detail">{&quot;detail&quot;:&quot;شما اجازه انجام این دستور را ندارید.&quot;}</div></td>
+        </tr>
+        <tr class="row-ok">
+            <td>ثبت نظر مشتری</td>
+            <td><code>POST</code></td>
+            <td><code>/comments/</code></td>
+            <td><span class="badge ok">201</span></td>
+            <td>264.9 ms</td>
+            <td></td>
+        </tr>
+        <tr class="row-ok">
+            <td>لیست کسب‌وکارها</td>
+            <td><code>GET</code></td>
+            <td><code>/business/</code></td>
+            <td><span class="badge ok">200</span></td>
+            <td>15.9 ms</td>
+            <td></td>
+        </tr>
+        <tr class="row-fail">
+            <td>لیست سرویس‌ها</td>
+            <td><code>GET</code></td>
+            <td><code>/business/services/</code></td>
+            <td><span class="badge fail">403</span></td>
+            <td>16.5 ms</td>
+            <td><div class="error-detail">{&quot;detail&quot;:&quot;شما اجازه انجام این دستور را ندارید.&quot;}</div></td>
+        </tr>
+        <tr class="row-fail">
+            <td>لیست کارمندها</td>
+            <td><code>GET</code></td>
+            <td><code>/business/employees/</code></td>
+            <td><span class="badge fail">403</span></td>
+            <td>27.5 ms</td>
+            <td><div class="error-detail">{&quot;detail&quot;:&quot;شما اجازه انجام این دستور را ندارید.&quot;}</div></td>
+        </tr>
+        <tr class="row-fail">
+            <td>لیست اسلات‌ها</td>
+            <td><code>GET</code></td>
+            <td><code>/business/slots/</code></td>
+            <td><span class="badge fail">403</span></td>
+            <td>12.4 ms</td>
+            <td><div class="error-detail">{&quot;detail&quot;:&quot;شما اجازه انجام این دستور را ندارید.&quot;}</div></td>
+        </tr>
+        <tr class="row-fail">
+            <td>لیست پکیج‌ها</td>
+            <td><code>GET</code></td>
+            <td><code>/packages/</code></td>
+            <td><span class="badge fail">403</span></td>
+            <td>23.0 ms</td>
+            <td><div class="error-detail">{&quot;detail&quot;:&quot;شما اجازه انجام این دستور را ندارید.&quot;}</div></td>
+        </tr>
+        <tr class="row-ok">
+            <td>پکیج‌های من</td>
+            <td><code>GET</code></td>
+            <td><code>/packages/user/</code></td>
+            <td><span class="badge ok">200</span></td>
+            <td>36.8 ms</td>
+            <td></td>
+        </tr>
+        <tr class="row-ok">
+            <td>لیست نظرات</td>
+            <td><code>GET</code></td>
+            <td><code>/comments/</code></td>
+            <td><span class="badge ok">200</span></td>
+            <td>18.4 ms</td>
+            <td></td>
+        </tr>
+        <tr class="row-ok">
+            <td>ساعات کاری من</td>
+            <td><code>GET</code></td>
+            <td><code>/working_hours/user/</code></td>
+            <td><span class="badge ok">200</span></td>
+            <td>16.5 ms</td>
+            <td></td>
+        </tr>
+        <tr class="row-ok">
+            <td>نوبت‌های من</td>
+            <td><code>GET</code></td>
+            <td><code>/reservations/my-appointments/</code></td>
+            <td><span class="badge ok">200</span></td>
+            <td>16.3 ms</td>
+            <td></td>
+        </tr>
+        <tr class="row-ok">
+            <td>داشبورد</td>
+            <td><code>GET</code></td>
+            <td><code>/dashboard/</code></td>
+            <td><span class="badge ok">200</span></td>
+            <td>56.3 ms</td>
+            <td></td>
+        </tr>
+        <tr class="row-fail">
+            <td>گزارش نوبت‌ها</td>
+            <td><code>GET</code></td>
+            <td><code>/reports/appointments/</code></td>
+            <td><span class="badge fail">403</span></td>
+            <td>15.4 ms</td>
+            <td><div class="error-detail">{&quot;detail&quot;:&quot;شما اجازه انجام این دستور را ندارید.&quot;}</div></td>
+        </tr>
+        <tr class="row-fail">
+            <td>گزارش مالی</td>
+            <td><code>GET</code></td>
+            <td><code>/reports/financial/</code></td>
+            <td><span class="badge fail">403</span></td>
+            <td>12.1 ms</td>
+            <td><div class="error-detail">{&quot;detail&quot;:&quot;شما اجازه انجام این دستور را ندارید.&quot;}</div></td>
+        </tr>
+        <tr class="row-fail">
+            <td>پرفروش‌ترین سرویس‌ها</td>
+            <td><code>GET</code></td>
+            <td><code>/reports/top-services/</code></td>
+            <td><span class="badge fail">403</span></td>
+            <td>11.2 ms</td>
+            <td><div class="error-detail">{&quot;error&quot;:&quot;دسترسی ندارید&quot;}</div></td>
+        </tr>
+        <tr class="row-ok">
+            <td>پلن‌های اشتراک (لندینگ)</td>
+            <td><code>GET</code></td>
+            <td><code>/landing/plans/</code></td>
+            <td><span class="badge ok">200</span></td>
+            <td>11.8 ms</td>
+            <td></td>
+        </tr>
+        <tr class="row-ok">
+            <td>مقالات لندینگ</td>
+            <td><code>GET</code></td>
+            <td><code>/landing/article/</code></td>
+            <td><span class="badge ok">200</span></td>
+            <td>10.5 ms</td>
+            <td></td>
+        </tr>
+        <tr class="row-fail">
+            <td>وضعیت اشتراک</td>
+            <td><code>GET</code></td>
+            <td><code>/landing/subscription/</code></td>
+            <td><span class="badge fail">500</span></td>
+            <td>995.5 ms</td>
+            <td><div class="error-detail">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=utf-8&quot;&gt;
+  &lt;meta name=&quot;robots&quot; content=&quot;NONE,NOARCHIVE&quot;&gt;
+  &lt;title&gt;RelatedObjectDoesNotExist
+          at /landing/subscription/&lt;/title&gt;
+  &lt;style&gt;
+    html * { padding:0; margin:0; }
+    body * { padding:10px 20px; }
+    body * * { padding:0; }
+    body { font-family: sans-serif; background-color:#f...(truncated)</div></td>
+        </tr>
+        <tr class="row-fail">
+            <td>اسلایدرهای عمومی</td>
+            <td><code>GET</code></td>
+            <td><code>/sliders/</code></td>
+            <td><span class="badge fail">403</span></td>
+            <td>7.9 ms</td>
+            <td><div class="error-detail">{&quot;detail&quot;:&quot;شما اجازه انجام این دستور را ندارید.&quot;}</div></td>
+        </tr>
+        <tr class="row-ok">
+            <td>اسلایدرهای من</td>
+            <td><code>GET</code></td>
+            <td><code>/sliders/user/</code></td>
+            <td><span class="badge ok">200</span></td>
+            <td>6.8 ms</td>
+            <td></td>
+        </tr>
+        <tr class="row-ok">
+            <td>کیف پول</td>
+            <td><code>GET</code></td>
+            <td><code>/payments/wallet/</code></td>
+            <td><span class="badge ok">200</span></td>
+            <td>142.6 ms</td>
+            <td></td>
+        </tr>
+        <tr class="row-ok">
+            <td>تراکنش‌های کیف پول</td>
+            <td><code>GET</code></td>
+            <td><code>/payments/wallet/transactions/</code></td>
+            <td><span class="badge ok">200</span></td>
+            <td>39.8 ms</td>
+            <td></td>
+        </tr>
+        <tr class="row-fail">
+            <td>کارت‌های بانکی من</td>
+            <td><code>GET</code></td>
+            <td><code>/payments/cards/number/</code></td>
+            <td><span class="badge fail">403</span></td>
+            <td>62.3 ms</td>
+            <td><div class="error-detail">{&quot;detail&quot;:&quot;شما اجازه انجام این دستور را ندارید.&quot;}</div></td>
+        </tr>
+        <tr class="row-ok">
+            <td>پرداخت‌های دستی</td>
+            <td><code>GET</code></td>
+            <td><code>/payments/manual-payments/</code></td>
+            <td><span class="badge ok">200</span></td>
+            <td>15.7 ms</td>
+            <td></td>
+        </tr>
+        <tr class="row-ok">
+            <td>مجوزهای ACL</td>
+            <td><code>GET</code></td>
+            <td><code>/acl/permissions/</code></td>
+            <td><span class="badge ok">200</span></td>
+            <td>17.5 ms</td>
+            <td></td>
+        </tr>
+        <tr class="row-ok">
+            <td>مجوزهای کاربران</td>
+            <td><code>GET</code></td>
+            <td><code>/acl/user-permissions/</code></td>
+            <td><span class="badge ok">200</span></td>
+            <td>16.2 ms</td>
+            <td></td>
+        </tr>
+        <tr class="row-fail">
+            <td>جزئیات کسب‌وکار من</td>
+            <td><code>GET</code></td>
+            <td><code>/business/3/</code></td>
+            <td><span class="badge fail">403</span></td>
+            <td>22.7 ms</td>
+            <td><div class="error-detail">{&quot;detail&quot;:&quot;شما اجازه انجام این دستور را ندارید.&quot;}</div></td>
+        </tr>
+  </tbody>
+</table>
+
+<script>
+  const ctx = document.getElementById('chart');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ["ثبت‌نام کاربر", "ورود (لاگین)", "پروفایل کاربر", "کسب‌وکار من (بررسی وجود)", "ساخت کسب‌وکار", "ساخت کارمند", "ساخت سرویس", "ثبت ساعت کاری", "ساخت پکیج", "ثبت نظر مشتری", "لیست کسب‌وکارها", "لیست سرویس‌ها", "لیست کارمندها", "لیست اسلات‌ها", "لیست پکیج‌ها", "پکیج‌های من", "لیست نظرات", "ساعات کاری من", "نوبت‌های من", "داشبورد", "گزارش نوبت‌ها", "گزارش مالی", "پرفروش‌ترین سرویس‌ها", "پلن‌های اشتراک (لندینگ)", "مقالات لندینگ", "وضعیت اشتراک", "اسلایدرهای عمومی", "اسلایدرهای من", "کیف پول", "تراکنش‌های کیف پول", "کارت‌های بانکی من", "پرداخت‌های دستی", "مجوزهای ACL", "مجوزهای کاربران", "جزئیات کسب‌وکار من"],
+      datasets: [{
+        label: 'زمان پاسخ (ms)',
+        data: [3438.4, 2595.5, 20.6, 194.8, 221.4, 118.3, 12.6, 23.3, 21.7, 264.9, 15.9, 16.5, 27.5, 12.4, 23.0, 36.8, 18.4, 16.5, 16.3, 56.3, 15.4, 12.1, 11.2, 11.8, 10.5, 995.5, 7.9, 6.8, 142.6, 39.8, 62.3, 15.7, 17.5, 16.2, 22.7],
+        backgroundColor: ["#2e7d32", "#2e7d32", "#2e7d32", "#c62828", "#2e7d32", "#c62828", "#c62828", "#c62828", "#c62828", "#2e7d32", "#2e7d32", "#c62828", "#c62828", "#c62828", "#c62828", "#2e7d32", "#2e7d32", "#2e7d32", "#2e7d32", "#2e7d32", "#c62828", "#c62828", "#c62828", "#2e7d32", "#2e7d32", "#c62828", "#c62828", "#2e7d32", "#2e7d32", "#2e7d32", "#c62828", "#2e7d32", "#2e7d32", "#2e7d32", "#c62828"],
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { autoSkip: false, maxRotation: 80, minRotation: 60 } },
+        y: { title: { display: true, text: 'میلی‌ثانیه' } }
+      }
+    }
+  });
+</script>
+</body>
+</html>
