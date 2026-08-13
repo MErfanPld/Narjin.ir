@@ -29,4 +29,8 @@ urlpatterns = [
     path("available-times/", AvailableTimesByServiceView.as_view(), name="available-times-by-service"),
 
     path('customer/business/<str:random_code>/', CustomerBusinessView.as_view(), name='customer-business'),
+
+    path('employees/mine/', EmployeeListView.as_view(), name='employee-list-mine'),
+    path('customers/mine/', BusinessCustomerListView.as_view(), name='customer-list-mine'),
+
 ]

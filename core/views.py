@@ -7,17 +7,53 @@ from .serializers import SliderSerializer
 from rest_framework.permissions import IsAuthenticated
 
 
+from rest_framework import generics
+from rest_framework.exceptions import NotFound
+from business.models import Business
+
+
 class SliderListView(generics.ListAPIView):
-    queryset = Slider.objects.filter(is_active=True)
+    """
+    بنرهای قابل نمایش برای مشتری یک آرایشگاه خاص:
+    بنرهای همون آرایشگاه + بنرهای سراسری ادمین.
+    """
     serializer_class = SliderSerializer
 
+    def get_queryset(self):
+        random_code = self.kwargs.get("random_code") or self.request.query_params.get("random_code")
 
-class SliderListCreateView(PermissionMixin,generics.ListCreateAPIView):
-    queryset = Slider.objects.all()
+        if not random_code:
+            raise NotFound("کد آرایشگاه ارسال نشده است.")
+
+        business = Business.objects.filter(random_code=random_code, is_active=True).first()
+        if not business:
+            raise NotFound("آرایشگاهی با این کد یافت نشد.")
+
+        return Slider.objects.filter(
+            models.Q(business=business) | models.Q(business__isnull=True),
+            is_active=True
+        )
+
+
+class SliderListCreateView(PermissionMixin, generics.ListCreateAPIView):
     serializer_class = SliderSerializer
     permission_classes = [RestPermissionMixin]
-    permissions = ['slider_create','slider_list']
+    permissions = ['slider_create', 'slider_list']
 
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_superuser:
+            return Slider.objects.all()
+        # صاحب آرایشگاه فقط بنرهای خودش رو می‌بینه/می‌سازه
+        return Slider.objects.filter(business__owner=user)  # فیلد owner رو مطابق مدل Business خودت تنظیم کن
+
+    def perform_create(self, serializer):
+        user = self.request.user
+        if user.is_superuser:
+            serializer.save()  # ادمین می‌تونه business رو خالی بذاره یا هر بیزینسی بزنه
+        else:
+            business = Business.objects.filter(owner=user).first()
+            serializer.save(business=business)
 
 class SliderRetrieveUpdateDestroyView(PermissionMixin,generics.RetrieveUpdateDestroyAPIView):
     queryset = Slider.objects.all()

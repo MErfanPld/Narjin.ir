@@ -10,7 +10,7 @@ from reservations.models import Appointment
 class BusinessSerializer(serializers.ModelSerializer):
     class Meta:
         model = Business
-        fields = ['id', 'name', 'slug', 'random_code', 'business_type', 'address', 'phone_number', 'is_active']
+        fields = ['id', 'name', 'slug', 'random_code', 'business_type', 'address', 'telephone_number','phone_number', 'is_active']
         read_only_fields = ['random_code', 'is_active']
 
 
@@ -181,3 +181,12 @@ class AppointmentSerializer(serializers.ModelSerializer):
             slot.is_available = False
             slot.save(update_fields=['is_available'])
             return appointment
+
+
+
+class CustomerSerializer(serializers.ModelSerializer):
+    appointments_count = serializers.IntegerField(read_only=True)
+
+    class Meta:
+        model = User
+        fields = ['id', 'first_name', 'last_name', 'phone_number', 'image', 'appointments_count']

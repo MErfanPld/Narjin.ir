@@ -22,7 +22,8 @@ def generate_unique_random_code(length=8):
 
 class Business(models.Model):
     BUSINESS_TYPES = [
-        ('salon', 'آرایشگاه'),
+        ('male_salon', 'آرایشگاه مردانه'),
+        ('female_salon', 'آرایشگاه زنانه'),
     ]
 
     owner = models.OneToOneField(
@@ -55,7 +56,6 @@ class Business(models.Model):
         if not hasattr(self, 'subscription'):
             return False
         return self.subscription.has_feature(feature_key)
-
 
 class Subscription(models.Model):
     business = models.OneToOneField(

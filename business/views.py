@@ -9,11 +9,13 @@ from acl.mixins import PermissionMixin
 from acl.rest_mixin import RestPermissionMixin
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 from datetime import datetime
+from rest_framework.exceptions import PermissionDenied
 
 from .models import Business, Employee, Service, AvailableTimeSlot
 from reservations.models import Appointment
 from .serializers import (
     BusinessSerializer,
+    CustomerSerializer,
     EmployeeSerializer,
     EmployeeCreateUpdateSerializer,
     ServiceSerializer,
@@ -103,16 +105,52 @@ class ResolveBusinessAPI(APIView):
             "services": services_data
         }, status=HTTP_200_OK)
 
+
+# business/views.py
+
+from django.db.models import Count
+from reservations.models import Appointment  # مسیر واقعی اپ نوبت‌دهی رو تنظیم کن
+
+
+class BusinessCustomerListView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated, RestPermissionMixin]
+    permissions = ['customer_list']
+    serializer_class = CustomerSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+
+        if user.is_superuser:
+            return User.objects.all()
+
+        business = getattr(user, 'business', None)
+        if not business:
+            raise PermissionDenied("شما صاحب هیچ کسب‌وکاری نیستید.")
+
+        customer_ids = Appointment.objects.filter(
+            employee__business=business
+        ).values_list('user_id', flat=True).distinct()
+
+        return User.objects.filter(id__in=customer_ids)
+        
+
 # ================= Employee CRUD =================
 class EmployeeListView(PermissionMixin, generics.ListAPIView):
+    """صاحب آرایشگاه فقط کارمندان خودش را می‌بیند"""
     permission_classes = [IsAuthenticated, RestPermissionMixin]
     permissions = ['employee_list']
     serializer_class = EmployeeSerializer
-    queryset = Employee.objects.all()
 
     def get_queryset(self):
-        return filter_by_owner(self.request.user, Employee.objects.all())
+        user = self.request.user
+        if user.is_superuser:
+            return Employee.objects.all()
 
+        business = getattr(user, 'business', None)
+        if not business:
+            raise PermissionDenied("شما صاحب هیچ کسب‌وکاری نیستید.")
+
+        return Employee.objects.filter(business=business)
 
 class EmployeeCreateView(PermissionMixin, generics.CreateAPIView):
     permission_classes = [IsAuthenticated, RestPermissionMixin]
@@ -145,6 +183,15 @@ class EmployeeRetrieveDestroyView(PermissionMixin, generics.RetrieveDestroyAPIVi
     def get_queryset(self):
         return filter_by_owner(self.request.user, Employee.objects.all())
 
+class EmployeeDetailView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated, RestPermissionMixin]
+    serializer_class = EmployeeSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_superuser:
+            return Employee.objects.all()
+        return Employee.objects.filter(business__owner=user)
 
 # ================= Service CRUD =================
 class ServiceListView(PermissionMixin, generics.ListAPIView):

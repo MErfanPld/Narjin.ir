@@ -2,7 +2,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('user/', views.PackageUserListView.as_view(), name='package-list-user'),
+    path('user/<str:random_code>/', views.PackageUserListView.as_view(), name='package-list-user'),
     path('', views.PackageListView.as_view(), name='package-list'),
     path('create/', views.PackageCreateView.as_view(), name='package-create'),
     path('<int:pk>/', views.PackageDetailView.as_view(), name='package-detail'),

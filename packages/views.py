@@ -1,67 +1,73 @@
-from rest_framework import generics, status
-from rest_framework.response import Response
+from rest_framework import generics
+from rest_framework.exceptions import NotFound
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import action
 
 from acl.mixins import PermissionMixin
 from acl.rest_mixin import RestPermissionMixin
 from .models import Package
 from .serializers import PackageSerializer
-from business.models import Business,Service
+from business.models import Business
 
 
 class PackageUserListView(generics.ListAPIView):
-    permission_classes = [IsAuthenticated]
+    """مشتری: فقط پکیج‌های همون آرایشگاه، از روی کد تصادفی"""
     serializer_class = PackageSerializer
 
     def get_queryset(self):
-        queryset = Package.objects.all()
-        business_id = self.request.query_params.get('business_id')
-        if business_id:
-            queryset = queryset.filter(business_id=business_id)
-        return queryset
+        random_code = self.kwargs.get('random_code')
+        business = Business.objects.filter(random_code=random_code, is_active=True).first()
+        if not business:
+            raise NotFound("آرایشگاهی با این کد یافت نشد.")
+        return Package.objects.filter(business=business)
 
 
-class PackageListView(PermissionMixin,generics.ListAPIView):
+class PackageListView(PermissionMixin, generics.ListAPIView):
+    """پنل مدیریت: صاحب فقط پکیج‌های خودش، ادمین همه رو می‌بینه"""
     permission_classes = [RestPermissionMixin]
     permissions = ['packages_list']
     serializer_class = PackageSerializer
 
     def get_queryset(self):
-        queryset = Package.objects.all()
-        business_id = self.request.query_params.get('business_id')
-        if business_id:
-            queryset = queryset.filter(business_id=business_id)
-        return queryset
+        user = self.request.user
+        if user.is_superuser:
+            return Package.objects.all()
+        return Package.objects.filter(business__owner=user)
+
 
 class PackageCreateView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated, RestPermissionMixin]
     permissions = ['packages_create']
     serializer_class = PackageSerializer
-
-    def perform_create(self, serializer):
-        business_id = serializer.validated_data['business'].id
-        business = Business.objects.get(pk=business_id)
-        if business.owner != self.request.user:
-            raise PermissionDenied("شما صاحب این کسب‌وکار نیستید.")
-        serializer.save()
+    # دیگه نیازی به perform_create دستی نیست؛ business توی validate() سریالایزر ست میشه
 
 
 class PackageDetailView(generics.RetrieveAPIView):
     permission_classes = [IsAuthenticated]
-    queryset = Package.objects.all()
     serializer_class = PackageSerializer
+
+    def get_queryset(self):
+        return Package.objects.all()
 
 
 class PackageUpdateView(generics.UpdateAPIView):
     permission_classes = [IsAuthenticated, RestPermissionMixin]
     permissions = ["packages_edit"]
-    queryset = Package.objects.all()
     serializer_class = PackageSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_superuser:
+            return Package.objects.all()
+        return Package.objects.filter(business__owner=user)
 
 
 class PackageDeleteView(generics.DestroyAPIView):
-    permission_classes = [IsAuthenticated,RestPermissionMixin]
+    permission_classes = [IsAuthenticated, RestPermissionMixin]
     permissions = ['packages_delete']
-    queryset = Package.objects.all()
     serializer_class = PackageSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_superuser:
+            return Package.objects.all()
+        return Package.objects.filter(business__owner=user)
