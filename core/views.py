@@ -5,7 +5,7 @@ from acl.rest_mixin import RestPermissionMixin
 from .models import Slider
 from .serializers import SliderSerializer
 from rest_framework.permissions import IsAuthenticated
-
+from django.db import models
 
 from rest_framework import generics
 from rest_framework.exceptions import NotFound
