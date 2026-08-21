@@ -13,15 +13,8 @@ from rest_framework.exceptions import PermissionDenied
 
 from .models import Business, Employee, Service, AvailableTimeSlot
 from reservations.models import Appointment
-from .serializers import (
-    BusinessSerializer,
-    CustomerSerializer,
-    EmployeeSerializer,
-    EmployeeCreateUpdateSerializer,
-    ServiceSerializer,
-    AvailableTimeSlotSerializer,
-    TimeSlotStatusUpdateSerializer
-)
+from .serializers import *
+
 
 # ================= Helper =================
 def filter_by_owner(user, queryset):
@@ -134,65 +127,67 @@ class BusinessCustomerListView(generics.ListAPIView):
         return User.objects.filter(id__in=customer_ids)
         
 
+
 # ================= Employee CRUD =================
 class EmployeeListView(PermissionMixin, generics.ListAPIView):
     """صاحب آرایشگاه فقط کارمندان خودش را می‌بیند"""
     permission_classes = [IsAuthenticated, RestPermissionMixin]
     permissions = ['employee_list']
     serializer_class = EmployeeSerializer
-
+ 
     def get_queryset(self):
         user = self.request.user
         if user.is_superuser:
             return Employee.objects.all()
-
+ 
         business = getattr(user, 'business', None)
         if not business:
             raise PermissionDenied("شما صاحب هیچ کسب‌وکاری نیستید.")
-
+ 
         return Employee.objects.filter(business=business)
-
+ 
+ 
 class EmployeeCreateView(PermissionMixin, generics.CreateAPIView):
+    """
+    ساخت کارمند جدید.
+    صاحب آرایشگاه هیچ دسترسی‌ای به لیست کاربران موجود ندارد -
+    فقط اطلاعات کارمند جدید (نام، تلفن) را وارد می‌کند و یک حساب کاربری
+    جدید برایش ساخته می‌شود.
+    """
     permission_classes = [IsAuthenticated, RestPermissionMixin]
     permissions = ['employee_create']
-    serializer_class = EmployeeCreateUpdateSerializer
-    queryset = Employee.objects.all()
-
-    def perform_create(self, serializer):
-        business = Business.objects.filter(owner=self.request.user).first()
-        if not business:
-            raise ValidationError("کاربر صاحب کسب‌وکار نیست")
-        serializer.save(business=business)
-
-
+    serializer_class = EmployeeCreateSerializer
+ 
+ 
 class EmployeeUpdateView(PermissionMixin, generics.UpdateAPIView):
+    """ویرایش کارمند - فقط مهارت و اطلاعات خودش، بدون امکان تعویض user"""
     permission_classes = [IsAuthenticated, RestPermissionMixin]
     permissions = ['employee_edit']
-    serializer_class = EmployeeCreateUpdateSerializer
-    queryset = Employee.objects.all()
-
+    serializer_class = EmployeeUpdateSerializer
+ 
     def get_queryset(self):
         return filter_by_owner(self.request.user, Employee.objects.all())
-
+ 
+ 
 class EmployeeRetrieveDestroyView(PermissionMixin, generics.RetrieveDestroyAPIView):
     permission_classes = [IsAuthenticated, RestPermissionMixin]
     permissions = ['employee_delete']
     serializer_class = EmployeeSerializer
-    queryset = Employee.objects.all()
-
+ 
     def get_queryset(self):
         return filter_by_owner(self.request.user, Employee.objects.all())
-
+ 
+ 
 class EmployeeDetailView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated, RestPermissionMixin]
     serializer_class = EmployeeSerializer
-
+ 
     def get_queryset(self):
         user = self.request.user
         if user.is_superuser:
             return Employee.objects.all()
         return Employee.objects.filter(business__owner=user)
-
+ 
 # ================= Service CRUD =================
 class ServiceListView(PermissionMixin, generics.ListAPIView):
     permission_classes = [IsAuthenticated, RestPermissionMixin]

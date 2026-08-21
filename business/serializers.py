@@ -15,14 +15,15 @@ class BusinessSerializer(serializers.ModelSerializer):
 
 
 # ================= Employee =================
+
 class EmployeeSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
     business = serializers.SerializerMethodField()
-
+ 
     class Meta:
         model = Employee
         fields = ['id', 'user', 'business', 'skill']
-
+ 
     def get_user(self, obj):
         role_name = getattr(getattr(obj.user, 'role', None), 'role_name', 'کاربر')
         return {
@@ -31,7 +32,7 @@ class EmployeeSerializer(serializers.ModelSerializer):
             "phone": obj.user.phone_number,
             "role": role_name
         }
-
+ 
     def get_business(self, obj):
         if obj.business:
             return {
@@ -41,21 +42,30 @@ class EmployeeSerializer(serializers.ModelSerializer):
                 "is_active": obj.business.is_active
             }
         return None
+ 
 
 
-class EmployeeCreateUpdateSerializer(serializers.ModelSerializer):
-    user_id = serializers.PrimaryKeyRelatedField(
-        queryset=User.objects.filter(is_active=True),
-        source='user',
-        write_only=True
-    )
+class EmployeeCreateSerializer(serializers.ModelSerializer):
+    first_name = serializers.CharField(write_only=True, max_length=150)
+    last_name = serializers.CharField(write_only=True, max_length=150, required=False, allow_blank=True)
+    phone_number = serializers.CharField(write_only=True, max_length=15)
+    password = serializers.CharField(write_only=True, required=False, allow_blank=True)
+ 
     user = serializers.SerializerMethodField(read_only=True)
     business = serializers.SerializerMethodField(read_only=True)
-
+ 
     class Meta:
         model = Employee
-        fields = ['id', 'user_id', 'user', 'business', 'skill']
-
+        fields = [
+            'id', 'first_name', 'last_name', 'phone_number', 'password',
+            'user', 'business', 'skill'
+        ]
+ 
+    def validate_phone_number(self, value):
+        if User.objects.filter(phone_number=value).exists():
+            raise serializers.ValidationError("کاربری با این شماره تلفن قبلاً ثبت شده است.")
+        return value
+ 
     def get_user(self, obj):
         role_name = getattr(getattr(obj.user, 'role', None), 'role_name', 'کاربر')
         return {
@@ -64,7 +74,7 @@ class EmployeeCreateUpdateSerializer(serializers.ModelSerializer):
             "phone": obj.user.phone_number,
             "role": role_name
         }
-
+ 
     def get_business(self, obj):
         if obj.business:
             return {
@@ -74,15 +84,71 @@ class EmployeeCreateUpdateSerializer(serializers.ModelSerializer):
                 "is_active": obj.business.is_active
             }
         return None
-
+ 
     def create(self, validated_data):
         request = self.context.get('request')
         business = Business.objects.filter(owner=request.user).first()
         if not business:
-            raise serializers.ValidationError("شما صاحب کسب‌وکار نیستید یا کسب‌وکار ثبت نشده است")
-        validated_data['business'] = business
-        return super().create(validated_data)
-
+            raise serializers.ValidationError("شما صاحب کسب‌وکار نیستید یا کسب‌وکار ثبت نشده است.")
+ 
+        first_name = validated_data.pop('first_name')
+        last_name = validated_data.pop('last_name', '')
+        phone_number = validated_data.pop('phone_number')
+        password = validated_data.pop('password', None) or User.objects.make_random_password()
+ 
+        user = User.objects.create_user(
+            phone_number=phone_number,
+            first_name=first_name,
+            last_name=last_name,
+            password=password,
+        )
+ 
+        employee = Employee.objects.create(business=business, user=user, **validated_data)
+        return employee
+ 
+ 
+class EmployeeUpdateSerializer(serializers.ModelSerializer):
+    first_name = serializers.CharField(source='user.first_name', required=False, max_length=150)
+    last_name = serializers.CharField(source='user.last_name', required=False, allow_blank=True, max_length=150)
+ 
+    user = serializers.SerializerMethodField(read_only=True)
+    business = serializers.SerializerMethodField(read_only=True)
+ 
+    class Meta:
+        model = Employee
+        fields = ['id', 'first_name', 'last_name', 'user', 'business', 'skill']
+ 
+    def get_user(self, obj):
+        role_name = getattr(getattr(obj.user, 'role', None), 'role_name', 'کاربر')
+        return {
+            "id": obj.user.id,
+            "name": f"{obj.user.first_name} {obj.user.last_name}".strip(),
+            "phone": obj.user.phone_number,
+            "role": role_name
+        }
+ 
+    def get_business(self, obj):
+        if obj.business:
+            return {
+                "id": obj.business.id,
+                "name": obj.business.name,
+                "type": obj.business.business_type,
+                "is_active": obj.business.is_active
+            }
+        return None
+ 
+    def update(self, instance, validated_data):
+        user_data = validated_data.pop('user', {})
+        if user_data:
+            for attr, value in user_data.items():
+                setattr(instance.user, attr, value)
+            instance.user.save()
+ 
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        return instance
+ 
 
 # ================= Service =================
 class ServiceSerializer(serializers.ModelSerializer):
