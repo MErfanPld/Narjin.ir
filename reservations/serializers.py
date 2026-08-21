@@ -2,6 +2,8 @@ from rest_framework import serializers
 from business.models import AvailableTimeSlot, Employee, Service
 from business.serializers import AvailableTimeSlotSerializer, EmployeeSerializer, ServiceSerializer
 from .models import Appointment
+from django.db import transaction
+
 
 class AppointmentSerializer(serializers.ModelSerializer):
     get_status = serializers.ReadOnlyField()
@@ -33,37 +35,55 @@ class AppointmentSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         user = self.context['request'].user
+        business = self.context['business']  # از URL random_code میاد
+
+        service = attrs.get('service_id')
+        employee = attrs.get('employee_id')
         time_slot = attrs.get('time_slot_id')
 
+        # ۱. سرویس باید متعلق به همین آرایشگاه باشد
+        if service.business_id != business.id:
+            raise serializers.ValidationError("این سرویس متعلق به این آرایشگاه نیست.")
+
+        # ۲. کارمند (اگر انتخاب شده) باید متعلق به همین آرایشگاه باشد
+        if employee and employee.business_id != business.id:
+            raise serializers.ValidationError("این کارمند متعلق به این آرایشگاه نیست.")
+
+        # ۳. تایم‌اسلات باید برای همین سرویس تعریف شده باشد
+        if time_slot.service_id != service.id:
+            raise serializers.ValidationError("این ساعت برای این سرویس تعریف نشده است.")
+
+        # ۴. جلوگیری از رزرو تکراری همان کاربر روی همان اسلات
         if Appointment.objects.filter(user=user, time_slot=time_slot).exists():
             raise serializers.ValidationError("شما قبلاً این بازه زمانی را رزرو کرده‌اید.")
+
         return attrs
 
     def create(self, validated_data):
-        # همه فیلدهای کاستوم رو pop کن
         service = validated_data.pop('service_id')
         employee = validated_data.pop('employee_id', None)
         time_slot = validated_data.pop('time_slot_id')
         user = self.context['request'].user
-        
-        # اگه user از قبل توی validated_data بود، پاکش کن
         validated_data.pop('user', None)
 
-        if not time_slot.is_available:
-            raise serializers.ValidationError("این بازه قبلاً رزرو شده")
+        with transaction.atomic():
+            locked_slot = AvailableTimeSlot.objects.select_for_update().get(pk=time_slot.id)
 
-        time_slot.is_available = False
-        time_slot.save()
+            if not locked_slot.is_available:
+                raise serializers.ValidationError("متأسفانه این ساعت لحظاتی پیش رزرو شد.")
 
-        appointment = Appointment.objects.create(
-            user=user,
-            service=service,
-            employee=employee,
-            time_slot=time_slot,
-            **validated_data
-        )
+            locked_slot.is_available = False
+            locked_slot.save(update_fields=['is_available'])
+
+            appointment = Appointment.objects.create(
+                user=user,
+                service=service,
+                employee=employee,
+                time_slot=locked_slot,
+                **validated_data
+            )
+
         return appointment
-
 
 # ============================== جدید: برای صاحب ارایشگاه ==============================
 class AppointmentBusinessSerializer(serializers.ModelSerializer):
