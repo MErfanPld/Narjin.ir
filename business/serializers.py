@@ -14,6 +14,7 @@ class BusinessSerializer(serializers.ModelSerializer):
         read_only_fields = ['random_code', 'is_active']
 
 
+
 # ================= Employee =================
 
 class EmployeeSerializer(serializers.ModelSerializer):

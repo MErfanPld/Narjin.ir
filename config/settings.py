@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     'reminders',
     'comments',
     'landing',
+    'notifications',
 ]
 
 MIDDLEWARE = [

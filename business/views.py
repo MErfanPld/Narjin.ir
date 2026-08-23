@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404
+from business.utils import get_business_or_404
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -98,6 +99,17 @@ class ResolveBusinessAPI(APIView):
             "services": services_data
         }, status=HTTP_200_OK)
 
+
+class BusinessServiceUserListView(generics.ListAPIView):
+    """
+    سرویس‌های قابل رزرو یک آرایشگاه خاص، برای نمایش به مشتری در بخش رزرو.
+    مسیر: GET /business/services/user/{random_code}/
+    """
+    serializer_class = ServiceSerializer
+
+    def get_queryset(self):
+        business = get_business_or_404(self.kwargs['random_code'])
+        return Service.objects.filter(business=business, is_active=True)
 
 # business/views.py
 

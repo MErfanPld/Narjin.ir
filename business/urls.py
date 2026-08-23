@@ -18,6 +18,7 @@ urlpatterns = [
     path('services/', ServiceListView.as_view(), name='service-list'),
     path('services/create/', ServiceCreateView.as_view(), name='service-create'),
     path('services/<int:pk>/', ServiceRetrieveUpdateDestroyView.as_view(), name='service-detail'),
+    path('services/user/<str:random_code>/', BusinessServiceUserListView.as_view(), name='service-list-user'),
 
     # ================= AvailableTimeSlot =================
     path('slots/', AvailableTimeSlotListView.as_view(), name='slot-list'),

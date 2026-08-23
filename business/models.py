@@ -10,15 +10,14 @@ def default_trial_end():
     return timezone.now() + timedelta(days=7)
 
 
-def generate_unique_random_code(length=8):
+def generate_unique_random_code(length=6):
     from .models import Business
-    import string, random
+    import random
 
     while True:
-        code = ''.join(random.choices(string.ascii_letters + string.digits, k=length))
+        code = ''.join(random.choices('0123456789', k=length))
         if not Business.objects.filter(random_code=code).exists():
             return code
-
 
 class Business(models.Model):
     BUSINESS_TYPES = [
