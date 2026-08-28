@@ -316,6 +316,17 @@ class AvailableTimeSlotListCreateView(PermissionMixin, generics.ListCreateAPIVie
         return queryset
 
 # ================= Available Times by Service =================
+from datetime import datetime
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from drf_spectacular.utils import extend_schema, OpenApiParameter
+
+from .models import Service, AvailableTimeSlot
+from reservations.models import Appointment
+
+
 @extend_schema(
     parameters=[
         OpenApiParameter(name='service_id', description='ID سرویس انتخاب‌شده', required=True, type=int),
@@ -325,7 +336,6 @@ class AvailableTimeSlotListCreateView(PermissionMixin, generics.ListCreateAPIVie
 )
 class AvailableTimesByServiceView(APIView):
     permission_classes = [IsAuthenticated]
-    permissions = []
 
     def get(self, request):
         service_id = request.query_params.get('service_id')
@@ -339,19 +349,29 @@ class AvailableTimesByServiceView(APIView):
             return Response({"error": "سرویس یافت نشد"}, status=404)
 
         slots = AvailableTimeSlot.objects.filter(service=service, date=date, is_available=True)
+
+        # چون فیلد end_time روی مدل AvailableTimeSlot وجود نداره (محاسبه‌ایه)،
+        # نمیشه توی ORM باهاش فیلتر کرد - فقط بر اساس تاریخ فیلتر می‌کنیم
+        # و تداخل ساعت رو خودمون توی پایتون چک می‌کنیم.
+        confirmed_appointments = Appointment.objects.filter(
+            service=service,
+            time_slot__date=date,
+            status='confirmed'
+        ).select_related('time_slot')
+
         available_times = []
 
         for slot in slots:
             start_dt = datetime.combine(slot.date, slot.start_time)
             end_dt = start_dt + service.duration
 
-            has_conflict = Appointment.objects.filter(
-                service=service,
-                time_slot__date=date,
-                status='confirmed',
-                time_slot__start_time__lt=end_dt.time(),
-                time_slot__end_time__gt=start_dt.time()
-            ).exists()
+            has_conflict = False
+            for appt in confirmed_appointments:
+                appt_start = datetime.combine(appt.time_slot.date, appt.time_slot.start_time)
+                appt_end = appt_start + service.duration
+                if start_dt < appt_end and end_dt > appt_start:
+                    has_conflict = True
+                    break
 
             if not has_conflict:
                 available_times.append({
