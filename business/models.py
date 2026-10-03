@@ -40,6 +40,12 @@ class Business(models.Model):
     is_coffee_shop = models.BooleanField(default=False, verbose_name='کافی‌شاپ')
     is_parking = models.BooleanField(default=False, verbose_name='پارکینگ')
     instagram_link = models.URLField(blank=True, null=True, verbose_name='اینستاگرام')
+    logo = models.ImageField(
+        upload_to='business_logos/',
+        null=True,
+        blank=True,
+        verbose_name='لوگوی آرایشگاه',
+    )
     random_code = models.CharField(max_length=10, unique=True, default=generate_unique_random_code, verbose_name='کد تصادفی')
     is_active = models.BooleanField(default=False, verbose_name='فعال')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='تاریخ ایجاد')
