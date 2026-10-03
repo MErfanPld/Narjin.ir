@@ -64,6 +64,7 @@ class Transaction(models.Model):
     def __str__(self):
         return f'{self.type} | {self.amount}'
 
+
 class Payment(models.Model):
     METHOD_CHOICES = [
         ('WALLET', 'کیف پول'),
@@ -90,29 +91,88 @@ class Payment(models.Model):
 
     def __str__(self):
         return f'{self.user} | {self.status}'
-    
-    
+
+
 class NumbersCard(models.Model):
-    num_code = models.CharField(max_length=16)    
-    name_bank = models.CharField(max_length=50)
-    status = models.BooleanField(default=False)
+    """اطلاعات کارت‌به‌کارت / حساب بانکی متعلق به یک آرایشگاه."""
+    business = models.ForeignKey(
+        'business.Business',
+        on_delete=models.CASCADE,
+        related_name='payment_cards',
+        null=True,
+        blank=True,
+        verbose_name='کسب‌وکار',
+    )
+    num_code = models.CharField(max_length=26, verbose_name='شماره کارت / شبا')
+    name_bank = models.CharField(max_length=50, verbose_name='نام بانک')
+    card_holder_name = models.CharField(max_length=100, blank=True, default='', verbose_name='نام صاحب حساب')
+    description = models.CharField(max_length=255, blank=True, default='', verbose_name='توضیح پرداخت')
+    status = models.BooleanField(default=True, verbose_name='فعال')
+
+    class Meta:
+        verbose_name = 'شماره کارت'
+        verbose_name_plural = 'شماره کارت‌ها'
 
     def __str__(self):
-        return f'{self.name_bank} | {self.status}'
-    
+        return f'{self.name_bank} | {self.num_code}'
+
 
 class ManualPayment(models.Model):
+    """آپلود فیش کارت‌به‌کارت توسط مشتری و بررسی توسط صاحب آرایشگاه."""
     STATUS_CHOICES = [
         ('pending', 'در انتظار بررسی'),
         ('approved', 'تأیید شده'),
         ('rejected', 'رد شده'),
     ]
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='manual_payments')
-    tracking_code = models.CharField(max_length=50, unique=True)
-    receipt_image = models.ImageField(upload_to='payment_receipts/', null=True, blank=True)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
-    created_at = models.DateTimeField(default=timezone.now)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='manual_payments',
+        verbose_name='مشتری',
+    )
+    business = models.ForeignKey(
+        'business.Business',
+        on_delete=models.CASCADE,
+        related_name='manual_payments',
+        null=True,
+        blank=True,
+        verbose_name='کسب‌وکار',
+    )
+    appointment = models.ForeignKey(
+        'reservations.Appointment',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='manual_payments',
+        verbose_name='نوبت',
+    )
+    amount = models.DecimalField(
+        max_digits=12, decimal_places=0, null=True, blank=True, verbose_name='مبلغ'
+    )
+    tracking_code = models.CharField(max_length=50, unique=True, verbose_name='کد پیگیری')
+    receipt_image = models.ImageField(
+        upload_to='payment_receipts/', null=True, blank=True, verbose_name='تصویر فیش'
+    )
+    status = models.CharField(
+        max_length=10, choices=STATUS_CHOICES, default='pending', verbose_name='وضعیت'
+    )
+    owner_note = models.TextField(blank=True, default='', verbose_name='یادداشت صاحب آرایشگاه')
+    reviewed_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='reviewed_manual_payments',
+        verbose_name='بررسی‌کننده',
+    )
+    reviewed_at = models.DateTimeField(null=True, blank=True, verbose_name='زمان بررسی')
+    created_at = models.DateTimeField(default=timezone.now, verbose_name='زمان ثبت')
+
+    class Meta:
+        verbose_name = 'پرداخت دستی'
+        verbose_name_plural = 'پرداخت‌های دستی'
+        ordering = ['-created_at']
 
     def __str__(self):
         return f'{self.user} | {self.tracking_code} | {self.status}'
