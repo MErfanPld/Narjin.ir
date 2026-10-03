@@ -10,7 +10,11 @@ from reservations.models import Appointment
 class BusinessSerializer(serializers.ModelSerializer):
     class Meta:
         model = Business
-        fields = ['id', 'name', 'slug', 'random_code', 'business_type', 'address', 'telephone_number','phone_number', 'is_active']
+        fields = [
+            'id', 'name', 'slug', 'random_code', 'business_type',
+            'address', 'telephone_number', 'phone_number',
+            'instagram_link', 'logo', 'is_active',
+        ]
         read_only_fields = ['random_code', 'is_active']
 
 
