@@ -83,17 +83,53 @@ class PayAppointmentWithWalletAPIView(APIView):
         return Response({"message": "پرداخت با کیف پول موفقیت‌آمیز بود."})
 
 
+# ==================== کارت بانکی آرایشگاه ====================
+
 class NumbersCardListView(generics.ListAPIView):
-    """لیست کارت‌های فعال یک آرایشگاه برای مشتری (با random_code)."""
+    """
+    لیست کارت‌های فعال یک آرایشگاه برای مشتری.
+    باید random_code (path) یا business_code (query) داده شود.
+    """
     serializer_class = NumbersCardSerializer
     permission_classes = [IsAuthenticated]
 
+    def list(self, request, *args, **kwargs):
+        random_code = (
+            kwargs.get('random_code')
+            or request.query_params.get('business_code')
+            or request.query_params.get('random_code')
+        )
+        if not random_code:
+            return Response(
+                {
+                    "error": "کد آرایشگاه الزامی است.",
+                    "detail": "پارامتر business_code یا random_code را ارسال کنید "
+                              "یا از مسیر /payments/cards/number/user/<random_code>/ استفاده کنید.",
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        business = get_business_or_404(random_code)
+        qs = NumbersCard.objects.filter(business=business, status=True).select_related('business')
+        serializer = self.get_serializer(qs, many=True)
+        return Response({
+            "business": {
+                "id": business.id,
+                "name": business.name,
+                "random_code": business.random_code,
+            },
+            "cards": serializer.data,
+        })
+
     def get_queryset(self):
-        random_code = self.request.query_params.get('business_code') or self.kwargs.get('random_code')
-        if random_code:
-            business = get_business_or_404(random_code)
-            return NumbersCard.objects.filter(business=business, status=True)
-        return NumbersCard.objects.filter(status=True, business__isnull=True)
+        random_code = (
+            self.kwargs.get('random_code')
+            or self.request.query_params.get('business_code')
+            or self.request.query_params.get('random_code')
+        )
+        if not random_code:
+            return NumbersCard.objects.none()
+        business = get_business_or_404(random_code)
+        return NumbersCard.objects.filter(business=business, status=True).select_related('business')
 
 
 class NumbersCardListCreateView(generics.ListCreateAPIView):
@@ -108,12 +144,13 @@ class NumbersCardListCreateView(generics.ListCreateAPIView):
         business = getattr(user, 'business', None)
         if not business:
             return NumbersCard.objects.none()
-        return NumbersCard.objects.filter(business=business)
+        return NumbersCard.objects.filter(business=business).select_related('business')
 
     def perform_create(self, serializer):
         user = self.request.user
         if user.is_superuser:
-            serializer.save()
+            business = getattr(user, 'business', None)
+            serializer.save(business=business) if business else serializer.save()
             return
         business = getattr(user, 'business', None)
         if not business:
@@ -123,22 +160,51 @@ class NumbersCardListCreateView(generics.ListCreateAPIView):
 
 
 class NumbersCardDetailView(generics.RetrieveUpdateDestroyAPIView):
-    """ویرایش/حذف کارت — فقط صاحب همان آرایشگاه یا ادمین."""
+    """
+    جزئیات / ویرایش / حذف کارت بانکی.
+    فقط صاحب همان آرایشگاه یا سوپریوزر.
+    GET / PATCH / PUT / DELETE  →  /payments/cards/number/<pk>/
+    """
     serializer_class = NumbersCardSerializer
     permission_classes = [IsAuthenticated]
+    http_method_names = ['get', 'put', 'patch', 'delete', 'head', 'options']
 
     def get_queryset(self):
         user = self.request.user
         if user.is_superuser:
-            return NumbersCard.objects.all()
+            return NumbersCard.objects.all().select_related('business')
         business = getattr(user, 'business', None)
         if not business:
             return NumbersCard.objects.none()
-        return NumbersCard.objects.filter(business=business)
+        return NumbersCard.objects.filter(business=business).select_related('business')
 
+    def perform_update(self, serializer):
+        serializer.save()
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(serializer.data)
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(
+            {"detail": "کارت بانکی با موفقیت حذف شد."},
+            status=status.HTTP_204_NO_CONTENT,
+        )
+
+
+# ==================== فیش دستی ====================
 
 class ManualPaymentListCreateView(generics.ListCreateAPIView):
-    """مشتری: فیش‌های خودش؛ صاحب آرایشگاه: فیش‌های سالنش."""
+    """
+    مشتری: لیست فیش‌های خودش + ثبت فیش جدید.
+    صاحب آرایشگاه: فیش‌های مربوط به سالن خودش.
+    """
     serializer_class = ManualPaymentSerializer
     permission_classes = [IsAuthenticated]
 
@@ -207,8 +273,13 @@ class ManualPaymentStatusUpdateView(APIView):
         })
 
 
+# ==================== QR Code با لوگو ====================
+
 class BusinessQRCodeView(APIView):
-    """تولید QR لینک رزرو؛ اگر لوگو باشد در مرکز QR قرار می‌گیرد."""
+    """
+    تولید QR کد لینک رزرو آرایشگاه.
+    اگر لوگو داشته باشد، در مرکز QR قرار می‌گیرد.
+    """
     permission_classes = [AllowAny]
 
     def get(self, request, random_code):
