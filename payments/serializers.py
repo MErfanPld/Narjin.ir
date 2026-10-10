@@ -25,6 +25,9 @@ class PaymentSerializer(serializers.ModelSerializer):
 
 
 class NumbersCardSerializer(serializers.ModelSerializer):
+    """کارت بانکی؛ business در پاسخ به‌صورت آبجکت برمی‌گردد."""
+    business = serializers.SerializerMethodField(read_only=True)
+
     class Meta:
         model = NumbersCard
         fields = [
@@ -32,6 +35,17 @@ class NumbersCardSerializer(serializers.ModelSerializer):
             'card_holder_name', 'description', 'status',
         ]
         read_only_fields = ['business']
+
+    def get_business(self, obj):
+        if not obj.business_id:
+            return None
+        b = obj.business
+        return {
+            'id': b.id,
+            'name': b.name,
+            'random_code': b.random_code,
+            'is_active': b.is_active,
+        }
 
     def create(self, validated_data):
         request = self.context.get('request')
